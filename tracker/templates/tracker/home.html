@@ -7,6 +7,33 @@
   </head>
   <body>
     <h1>Workout Tracker App</h1>
-    <p>Your workout tracking journey starts here.</p>
+
+    <h2>Saved Workouts</h2>
+
+    {% if workouts %} {% for workout in workouts %}
+
+    <div>
+      <h3>{{ workout.workout_name }}</h3>
+
+      <p>Exercise: {{ workout.exercise }}</p>
+
+      <p>Sets: {{ workout.sets }}</p>
+
+      <p>Reps: {{ workout.reps }}</p>
+
+      <p>Weight: {{ workout.weight }} kg</p>
+
+      <p>Date: {{ workout.workout_date }}</p>
+
+      <p>Notes: {{ workout.notes }}</p>
+
+      <hr />
+    </div>
+
+    {% endfor %} {% else %}
+
+    <p>No workouts added yet.</p>
+
+    {% endif %}
   </body>
 </html>
