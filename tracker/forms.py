@@ -14,3 +14,7 @@ class WorkoutForm(forms.ModelForm):
             'workout_date',
             'notes'
         ]
+
+        widgets = {
+            'workout_date': forms.DateInput(attrs={'type': 'date'}),
+        }

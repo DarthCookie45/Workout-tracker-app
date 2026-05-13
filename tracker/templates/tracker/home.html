@@ -8,6 +8,16 @@
   <body>
     <h1>Workout Tracker App</h1>
 
+    <h2>Add Workout</h2>
+
+    <form method="POST">
+      {% csrf_token %} {{ form.as_p }}
+
+      <button type="submit">Add Workout</button>
+    </form>
+
+    <hr />
+
     <h2>Saved Workouts</h2>
 
     {% if workouts %} {% for workout in workouts %}

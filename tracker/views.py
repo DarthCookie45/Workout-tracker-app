@@ -7,7 +7,7 @@ def home(request):
 
     workouts = Workout.objects.all()
 
-    if request/method == 'POST':
+    if request.method == 'POST':
 
         form = WorkoutForm(request.POST)
 
