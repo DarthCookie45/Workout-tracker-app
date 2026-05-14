@@ -23,30 +23,44 @@
         <h2 class="mb-4">Workout History</h2>
 
         {% if workouts %}
-        <ul class="list-group">
+        <div class="row mt-4">
           {% for workout in workouts %}
-          <li class="list-group-item">
-            <strong>{{ workout.workout_name }}</strong><br />
+          <div class="col-md-6 mb-4">
+            <div class="card bg-dark text-light shadow-lg h-100">
+              <div class="card-body">
+                <h3 class="card-title">{{ workout.workout_name }}</h3>
 
-            Exercise: {{ workout.exercise }} | Sets: {{ workout.sets }} | Reps:
-            {{ workout.reps }} | Weight: {{ workout.weight }}kg
-            <br /><br />
+                <p><strong>Exercise:</strong> {{ workout.exercise }}</p>
 
-            <a
-              href="{% url 'edit_workout' workout.id %}"
-              class="btn btn-sm btn-warning"
-            >
-              Edit
-            </a>
-            <a
-              href="{% url 'delete_workout' workout.id %}"
-              class="btn btn-sm btn-danger"
-            >
-              Delete
-            </a>
-          </li>
+                <p>
+                  <strong>Sets:</strong> {{ workout.sets }} |
+                  <strong>Reps:</strong> {{ workout.reps }}
+                </p>
+
+                <p><strong>Weight:</strong> {{ workout.weight }} kg</p>
+
+                <p><strong>Date:</strong> {{ workout.workout_date }}</p>
+
+                <p><strong>Notes:</strong> {{ workout.notes }}</p>
+
+                <a
+                  href="{% url 'edit_workout' workout.id %}"
+                  class="btn btn-warning btn-sm"
+                >
+                  Edit
+                </a>
+
+                <a
+                  href="{% url 'delete_workout' workout.id %}"
+                  class="btn btn-danger btn-sm"
+                >
+                  Delete
+                </a>
+              </div>
+            </div>
+          </div>
           {% endfor %}
-        </ul>
+        </div>
 
         {% else %}
 
