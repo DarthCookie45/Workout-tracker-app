@@ -1,0 +1,12 @@
+## Development Testing Log
+
+| Test ID | Feature       | Action                                          | Expected Result               | Result | Notes                                                                                                    |
+| ------- | ------------- | ----------------------------------------------- | ----------------------------- | ------ | -------------------------------------------------------------------------------------------------------- |
+| T01     | Django URLs   | Run development server                          | Homepage loads correctly      | Fail   | `tracker.urls` module could not be found because `urls.py` was accidently placed in the templates folder |
+| T02     | Django URLs   | Run development server                          | Homepage loads correctly      | Pass   | Moved `urls.py` into the main `tracker` app folder                                                       |
+| T03     | Views Import  | Run development server                          | Views import correctly        | Fail   | Incorrect import statement attempted to import views from `tracker.templates.tracker`                    |
+| T04     | Views Import  | Run development server                          | Views import correctly        | Pass   | Changed import statement to `from . import views`                                                        |
+| T05     | Homepage View | Open homepage in browser                        | Homepage renders successfully | Fail   | `request/method` used instead of `request.method` causing `NameError: method is not defined`             |
+| T06     | Homepage View | Reload homepage after syntax correction         | Homepage renders successfully | Pass   | Corrected syntax in `views.py` to `request.method`                                                       |
+| T07     | Workout Form  | Submit workout using date format `13/05/26`     | Workout saves successfully    | Fail   | Django `DateField` requires date format `YYYY-MM-DD`                                                     |
+| T08     | Workout Form  | Submit workout using date picker / valid format | Workout saves successfully    | Pass   | Used HTML5 date picker with valid Django date format                                                     |
