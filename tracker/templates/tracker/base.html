@@ -13,7 +13,25 @@
   <body class="bg-dark text-light">
     <nav class="navbar navbar-dark bg-black shadow">
       <div class="container">
-        <span class="navbar-brand mb-0 h1"> 💪 Workout Tracker App </span>
+        <a class="navbar-brand" href="{% url 'home' %}">
+          💪 Workout Tracker App
+        </a>
+
+        <div>
+          {% if user.is_authenticated %}
+
+          <span class="text-light me-3"> Hello, {{ user.username }} </span>
+
+          <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">
+            Logout
+          </a>
+
+          {% else %}
+
+          <a href="{% url 'login' %}" class="btn btn-primary btn-sm"> Login </a>
+
+          {% endif %}
+        </div>
       </div>
     </nav>
 
