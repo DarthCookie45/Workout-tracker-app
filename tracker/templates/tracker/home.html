@@ -30,6 +30,20 @@
 
             Exercise: {{ workout.exercise }} | Sets: {{ workout.sets }} | Reps:
             {{ workout.reps }} | Weight: {{ workout.weight }}kg
+            <br /><br />
+
+            <a
+              href="{% url 'edit_workout' workout.id %}"
+              class="btn btn-sm btn-warning"
+            >
+              Edit
+            </a>
+            <a
+              href="{% url 'delete_workout' workout.id %}"
+              class="btn btn-sm btn-danger"
+            >
+              Delete
+            </a>
           </li>
           {% endfor %}
         </ul>
