@@ -43,16 +43,65 @@
   </div>
 
   <form method="GET" class="mb-4">
-    <div class="input-group">
-      <input
-        type="text"
-        name="search"
-        class="form-control"
-        placeholder="Search workout..."
-        value="{{ search_query }}"
-      />
+    <div class="row g-2">
+      <div class="col-md-8">
+        <input
+          type="text"
+          name="search"
+          class="form-control"
+          placeholder="Search workouts..."
+          value="{{ search_query }}"
+        />
+      </div>
 
-      <button class="btn btn-primary" type="submit">Search</button>
+      <div class="col-md-3">
+        <select name="filter" class="form-select">
+          <option value="">All Workouts</option>
+
+          <option
+            value="newest"
+            {%
+            if
+            filter_option=""
+            ="newest"
+            %}selected{%
+            endif
+            %}
+          >
+            Most Recent
+          </option>
+
+          <option
+            value="oldest"
+            {%
+            if
+            filter_option=""
+            ="oldest"
+            %}selected{%
+            endif
+            %}
+          >
+            Oldest
+          </option>
+
+          <option
+            value="highest_volume"
+            {%
+            if
+            filter_option=""
+            ="highest_volume"
+            %}selected{%
+            endif
+            %}
+          >
+            Highest Volume
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-1 d-grid">
+        <button class="btn btn-primary" type="submit">Go</button>
+      </div>
     </div>
   </form>
 
