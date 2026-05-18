@@ -12,6 +12,36 @@
     </a>
   </div>
 
+  <!-- Stats Cards -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3">
+      <div class="card bg-primary text-light shadow h-100">
+        <div class="card-body">
+          <h5>Total Workouts</h5>
+          <h2>{{ total_workouts }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card bg-success text-light shadow h-100">
+        <div class="card-body">
+          <h5>Total Sets</h5>
+          <h2>{{ total_sets }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card bg-warning text-dark shadow h-100">
+        <div class="card-body">
+          <h5>Total Volume Lifted</h5>
+          <h2>{{ total_weight }} kg</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
   {% if workouts %}
   <div class="row">
     {% for workout in workouts %}

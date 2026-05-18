@@ -5,24 +5,27 @@ from .forms import WorkoutForm
 # Create your views here.
 def home(request):
 
-    workouts = Workout.objects.all()
+    workouts = Workout.objects.all().order_by('-workout_date')
 
-    if request.method == 'POST':
+    total_workouts = workouts.count()
 
-        form = WorkoutForm(request.POST)
+    total_sets = sum(workout.sets for workout in workouts)
 
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    
-    else:
-        form = WorkoutForm()
-    
+    total_weight = sum(
+        workout.weight * workout.sets * workout.reps
+        for workout in workouts
+    )
+
+    recent_workouts = workouts[:5]
+
     context = {
         'workouts': workouts,
-        'form': form
+        'total_workouts': total_workouts,
+        'total_sets': total_sets,
+        'total_weight': total_weight,
+        'recent_workouts': recent_workouts,
     }
-    
+
     return render(request, 'tracker/home.html', context)
 
 def add_workout(request):
