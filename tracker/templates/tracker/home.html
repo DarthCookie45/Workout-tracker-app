@@ -42,6 +42,20 @@
     </div>
   </div>
 
+  <form method="GET" class="mb-4">
+    <div class="input-group">
+      <input
+        type="text"
+        name="search"
+        class="form-control"
+        placeholder="Search workout..."
+        value="{{ search_query }}"
+      />
+
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+  </form>
+
   {% if workouts %}
   <div class="row">
     {% for workout in workouts %}

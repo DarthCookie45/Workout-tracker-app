@@ -7,6 +7,13 @@ def home(request):
 
     workouts = Workout.objects.all().order_by('-workout_date')
 
+    search_query = request.GET.get('search', '')
+
+    if search_query:
+        workouts = workouts.filter(
+            workout_name__icontains=search_query
+        )
+
     total_workouts = workouts.count()
 
     total_sets = sum(workout.sets for workout in workouts)
