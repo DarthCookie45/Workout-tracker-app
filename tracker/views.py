@@ -25,6 +25,19 @@ def home(request):
     
     return render(request, 'tracker/home.html', context)
 
+def add_workout(request):
+    if request.method == "POST":
+        form = WorkoutForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        
+    else:
+        form = WorkoutForm()
+    
+    return render(request, 'tracker/add_workout.html', {'form': form})
+
 def edit_workout(request, workout_id):
 
     workout = Workout.objects.get(id=workout_id)
