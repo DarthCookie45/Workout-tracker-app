@@ -1,4 +1,6 @@
-{% extends "tracker/base.html" %} {% block content %}
+{% extends "tracker/base.html" %} 
+
+{% block content %}
 
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
@@ -42,6 +44,14 @@
     </div>
   </div>
 
+  <!-- Chart Section -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h3 class="mb-3">Workout Volume Analytics</h3>
+      <canvas id="workoutChart" height="100"></canvas>
+    </div>
+  </div>
+
   <form method="GET" class="mb-4">
     <div class="row g-2">
       <div class="col-md-8">
@@ -58,44 +68,17 @@
         <select name="filter" class="form-select">
           <option value="">All Workouts</option>
 
-          <option
-            value="newest"
-            {%
-            if
-            filter_option=""
-            ="newest"
-            %}selected{%
-            endif
-            %}
-          >
-            Most Recent
-          </option>
+          <option value="newest" {% if filter_option == 'newest' %}selected{% endif %}>
+    Most Recent
+</option>
 
-          <option
-            value="oldest"
-            {%
-            if
-            filter_option=""
-            ="oldest"
-            %}selected{%
-            endif
-            %}
-          >
-            Oldest
-          </option>
+          <option value="oldest" {% if filter_option == 'oldest' %}selected{% endif %}>
+    Oldest
+</option>
 
-          <option
-            value="highest_volume"
-            {%
-            if
-            filter_option=""
-            ="highest_volume"
-            %}selected{%
-            endif
-            %}
-          >
-            Highest Volume
-          </option>
+          <option value="highest_volume" {% if filter_option == 'highest_volume' %}selected{% endif %}>
+    Highest Volume
+</option>
         </select>
       </div>
 
@@ -171,5 +154,37 @@
 
   {% endif %}
 </div>
+
+<script>
+
+  const chartLabels = {{ chart_labels|safe }};
+  const chartData = {{ chart_data|safe }};
+
+  const ctx = document.getElementById('workoutChart');
+
+  new Chart(ctx, {
+      type: 'bar',
+
+      data: {
+          labels: chartLabels,
+
+          datasets: [{
+              label: 'Workout Volume',
+              data: chartData,
+              borderWidth: 1
+          }]
+      },
+
+      options: {
+          responsive: true,
+
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+</script>
 
 {% endblock %}

@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Workout
 from .forms import WorkoutForm
+from collections import defaultdict
+import json
 
 # Create your views here.
 # Homepage / Dashboard
@@ -47,6 +49,28 @@ def home(request):
 
     recent_workouts = workouts[:5]
 
+    # Workout volume chart data
+    volume_data = defaultdict(int)
+
+    for workout in workouts:
+
+        volume = (
+            workout.weight *
+            workout.reps *
+            workout.sets
+        )
+
+        volume_data[workout.workout_name] += volume
+
+    chart_labels = json.dumps([
+    workout.workout_name for workout in workouts
+    ])
+
+    chart_data = json.dumps([
+    float(workout.weight) * workout.sets * workout.reps
+    for workout in workouts
+])
+
     context = {
         'workouts': workouts,
         'total_workouts': total_workouts,
@@ -55,6 +79,8 @@ def home(request):
         'recent_workouts': recent_workouts,
         'search_query': search_query,
         'filter_option': filter_option,
+        'chart_labels': chart_labels,
+        'chart_data': chart_data,
     }
 
     return render(request, 'tracker/home.html', context)
