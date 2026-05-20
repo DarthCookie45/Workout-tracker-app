@@ -7,12 +7,10 @@ import json
 # Create your views here.
 # Homepage / Dashboard
 def home(request):
-
     workouts = Workout.objects.all().order_by('-workout_date')
 
     search_query = request.GET.get('search', '')
     filter_option = request.GET.get('filter', '')
-
     muscle_group = request.GET.get('muscle_group', '')
 
     # Search filtering
@@ -20,11 +18,12 @@ def home(request):
         workouts = workouts.filter(
             workout_name__icontains=search_query
         )
-    
+
+    # Muscle group filtering
     if muscle_group:
         workouts = workouts.filter(
             muscle_group=muscle_group
-    )
+        )
 
     # Workout ordering filters
     if filter_option == 'oldest':
@@ -37,7 +36,7 @@ def home(request):
         workouts = sorted(
             workouts,
             key=lambda workout: (
-                workout.weight * workout.sets * workout.reps
+                float(workout.weight) * workout.sets * workout.reps
             ),
             reverse=True
         )
@@ -50,33 +49,26 @@ def home(request):
     )
 
     total_weight = sum(
-        workout.weight * workout.sets * workout.reps
+        float(workout.weight) * workout.sets * workout.reps
         for workout in workouts
     )
 
     recent_workouts = workouts[:5]
 
-    # Workout volume chart data
-    volume_data = defaultdict(int)
+    # Workout volume chart data grouped by muscle group
+    volume_data = defaultdict(float)
 
     for workout in workouts:
-
         volume = (
-            workout.weight *
-            workout.reps *
-            workout.sets
+            float(workout.weight)
+            * workout.reps
+            * workout.sets
         )
 
-        volume_data[workout.workout_name] += volume
+        volume_data[workout.muscle_group] += volume
 
-    chart_labels = json.dumps([
-    workout.workout_name for workout in workouts
-    ])
-
-    chart_data = json.dumps([
-    float(workout.weight) * workout.sets * workout.reps
-    for workout in workouts
-])
+    chart_labels = json.dumps(list(volume_data.keys()))
+    chart_data = json.dumps(list(volume_data.values()))
 
     context = {
         'workouts': workouts,
@@ -86,6 +78,7 @@ def home(request):
         'recent_workouts': recent_workouts,
         'search_query': search_query,
         'filter_option': filter_option,
+        'muscle_group': muscle_group,
         'chart_labels': chart_labels,
         'chart_data': chart_data,
     }
@@ -95,9 +88,7 @@ def home(request):
 
 # Add workout
 def add_workout(request):
-
     if request.method == "POST":
-
         form = WorkoutForm(request.POST)
 
         if form.is_valid():
@@ -116,11 +107,9 @@ def add_workout(request):
 
 # Edit workout
 def edit_workout(request, workout_id):
-
     workout = Workout.objects.get(id=workout_id)
 
     if request.method == 'POST':
-
         form = WorkoutForm(
             request.POST,
             instance=workout
@@ -146,7 +135,6 @@ def edit_workout(request, workout_id):
 
 # Delete workout
 def delete_workout(request, workout_id):
-
     workout = Workout.objects.get(id=workout_id)
 
     if request.method == 'POST':
