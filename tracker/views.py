@@ -13,11 +13,18 @@ def home(request):
     search_query = request.GET.get('search', '')
     filter_option = request.GET.get('filter', '')
 
+    muscle_group = request.GET.get('muscle_group', '')
+
     # Search filtering
     if search_query:
         workouts = workouts.filter(
             workout_name__icontains=search_query
         )
+    
+    if muscle_group:
+        workouts = workouts.filter(
+            muscle_group=muscle_group
+    )
 
     # Workout ordering filters
     if filter_option == 'oldest':

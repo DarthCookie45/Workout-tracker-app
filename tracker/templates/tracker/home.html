@@ -52,7 +52,8 @@
 
   <form method="GET" class="mb-4">
     <div class="row g-2">
-      <div class="col-md-8">
+      <!-- Search -->
+      <div class="col-md-5">
         <input
           type="text"
           name="search"
@@ -62,6 +63,7 @@
         />
       </div>
 
+      <!-- Sort Filter -->
       <div class="col-md-3">
         <select name="filter" class="form-select">
           <option value="">All Workouts</option>
@@ -107,6 +109,21 @@
         </select>
       </div>
 
+      <!-- Muscle Group Filter -->
+      <div class="col-md-3">
+        <select name="muscle_group" class="form-select">
+          <option value="">All Muscle Groups</option>
+
+          <option value="Arms">Arms</option>
+          <option value="Chest">Chest</option>
+          <option value="Back">Back</option>
+          <option value="Legs">Legs</option>
+          <option value="Shoulders">Shoulders</option>
+          <option value="Core">Core</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
       <div class="col-md-1 d-grid">
         <button class="btn btn-primary" type="submit">Go</button>
       </div>
