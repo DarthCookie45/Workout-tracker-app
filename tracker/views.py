@@ -3,11 +3,15 @@ from .models import Workout
 from .forms import WorkoutForm
 from collections import defaultdict
 import json
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 # Homepage / Dashboard
+@login_required
 def home(request):
-    workouts = Workout.objects.all().order_by('-workout_date')
+    workouts = Workout.objects.filter(
+        user=request.user
+    ).order_by('-workout_date')
 
     search_query = request.GET.get('search', '')
     filter_option = request.GET.get('filter', '')
@@ -87,12 +91,15 @@ def home(request):
 
 
 # Add workout
+@login_required
 def add_workout(request):
     if request.method == "POST":
         form = WorkoutForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            workout = form.save(commit=False)
+            workout.user = request.user
+            workout.save()
             return redirect('home')
 
     else:
@@ -106,8 +113,12 @@ def add_workout(request):
 
 
 # Edit workout
+@login_required
 def edit_workout(request, workout_id):
-    workout = Workout.objects.get(id=workout_id)
+    workout = Workout.objects.get(
+        id=workout_id,
+        user=request.user
+    )
 
     if request.method == 'POST':
         form = WorkoutForm(
@@ -134,8 +145,12 @@ def edit_workout(request, workout_id):
 
 
 # Delete workout
+@login_required
 def delete_workout(request, workout_id):
-    workout = Workout.objects.get(id=workout_id)
+    workout = Workout.objects.get(
+        id=workout_id,
+        user=request.user
+    )
 
     if request.method == 'POST':
         workout.delete()
