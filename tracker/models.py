@@ -1,9 +1,26 @@
 from django.db import models
 
 # Create your models here.
+
+MUSCLE_GROUP_CHOICES = [
+    ('Arms', 'Arms'),
+    ('Chest', 'Chest'),
+    ('Back', 'Back'),
+    ('Legs', 'Legs'),
+    ('Shoulders', 'Shoulders'),
+    ('Core', 'Core'),
+]
+
 class Workout(models.Model):
     workout_name = models.CharField(max_length=100)
     exercise = models.CharField(max_length=100)
+
+    muscle_group = models.CharField(
+    max_length=20,
+    choices=MUSCLE_GROUP_CHOICES,
+    default='Arms'
+)
+    
     sets = models.PositiveIntegerField()
     reps = models.PositiveIntegerField()
     weight = models.DecimalField(max_digits=5, decimal_places=2)

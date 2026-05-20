@@ -8,6 +8,7 @@ class WorkoutForm(forms.ModelForm):
         fields = [
             'workout_name',
             'exercise',
+            'muscle_group',
             'sets',
             'reps',
             'weight',
