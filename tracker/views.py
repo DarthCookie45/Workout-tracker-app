@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Workout
 from .forms import WorkoutForm
 from collections import defaultdict
@@ -117,10 +117,11 @@ def add_workout(request):
 # Edit workout
 @login_required
 def edit_workout(request, workout_id):
-    workout = Workout.objects.get(
-        id=workout_id,
-        user=request.user
-    )
+    workout = get_object_or_404(
+    Workout,
+    id=workout_id,
+    user=request.user
+)
 
     if request.method == 'POST':
         form = WorkoutForm(
@@ -149,10 +150,11 @@ def edit_workout(request, workout_id):
 # Delete workout
 @login_required
 def delete_workout(request, workout_id):
-    workout = Workout.objects.get(
-        id=workout_id,
-        user=request.user
-    )
+    workout = get_object_or_404(
+    Workout,
+    id=workout_id,
+    user=request.user
+)
 
     if request.method == 'POST':
         workout.delete()
