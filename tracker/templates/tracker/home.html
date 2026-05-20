@@ -1,6 +1,4 @@
-{% extends "tracker/base.html" %} 
-
-{% block content %}
+{% extends "tracker/base.html" %} {% block content %}
 
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
@@ -68,17 +66,44 @@
         <select name="filter" class="form-select">
           <option value="">All Workouts</option>
 
-          <option value="newest" {% if filter_option == 'newest' %}selected{% endif %}>
-    Most Recent
-</option>
+          <option
+            value="newest"
+            {%
+            if
+            filter_option=""
+            ="newest"
+            %}selected{%
+            endif
+            %}
+          >
+            Most Recent
+          </option>
 
-          <option value="oldest" {% if filter_option == 'oldest' %}selected{% endif %}>
-    Oldest
-</option>
+          <option
+            value="oldest"
+            {%
+            if
+            filter_option=""
+            ="oldest"
+            %}selected{%
+            endif
+            %}
+          >
+            Oldest
+          </option>
 
-          <option value="highest_volume" {% if filter_option == 'highest_volume' %}selected{% endif %}>
-    Highest Volume
-</option>
+          <option
+            value="highest_volume"
+            {%
+            if
+            filter_option=""
+            ="highest_volume"
+            %}selected{%
+            endif
+            %}
+          >
+            Highest Volume
+          </option>
         </select>
       </div>
 
@@ -95,6 +120,7 @@
       <div class="card bg-dark text-light shadow h-100">
         <div class="card-body">
           <h3 class="card-title">{{ workout.workout_name }}</h3>
+          <span class="badge bg-info mb-2"> {{ workout.muscle_group }} </span>
 
           <hr />
 
