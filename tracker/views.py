@@ -4,6 +4,8 @@ from .forms import WorkoutForm
 from collections import defaultdict
 import json
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 
 # Create your views here.
 # Homepage / Dashboard
@@ -164,4 +166,23 @@ def delete_workout(request, workout_id):
         request,
         'tracker/delete_workout.html',
         context
+    )
+
+# User registration
+def register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+
+    else:
+        form = UserCreationForm()
+
+    return render(
+        request,
+        'tracker/register.html',
+        {'form': form}
     )

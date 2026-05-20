@@ -21,4 +21,8 @@ urlpatterns = [
         views.delete_workout,
         name='delete_workout'
     ),
+
+
+    path('register/', views.register, name='register'),
+
 ]

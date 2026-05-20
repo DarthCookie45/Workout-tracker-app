@@ -14,7 +14,6 @@
   </head>
 
   <body class="bg-dark bg-secondary text-light">
-
     <nav class="navbar navbar-dark bg-black shadow">
       <div class="container">
         <a class="navbar-brand" href="{% url 'home' %}">
@@ -24,9 +23,7 @@
         <div>
           {% if user.is_authenticated %}
 
-          <span class="text-light me-3">
-            Hello, {{ user.username }}
-          </span>
+          <span class="text-light me-3"> Hello, {{ user.username }} </span>
 
           <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">
             Logout
@@ -34,19 +31,17 @@
 
           {% else %}
 
-          <a href="{% url 'login' %}" class="btn btn-primary btn-sm">
-            Login
+          <a href="{% url 'register' %}" class="btn btn-success btn-sm me-2">
+            Register
           </a>
+
+          <a href="{% url 'login' %}" class="btn btn-primary btn-sm"> Login </a>
 
           {% endif %}
         </div>
       </div>
     </nav>
 
-    <div class="container mt-4">
-      {% block content %}
-      {% endblock %}
-    </div>
-
+    <div class="container mt-4">{% block content %} {% endblock %}</div>
   </body>
 </html>
