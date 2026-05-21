@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
 
 # Create your models here.
 
@@ -32,7 +33,11 @@ class Workout(models.Model):
     
     sets = models.PositiveIntegerField()
     reps = models.PositiveIntegerField()
-    weight = models.DecimalField(max_digits=5, decimal_places=2)
+    weight = models.DecimalField(
+        max_digits=6, 
+        decimal_places=2,
+        validators=[MinValueValidator(0)]
+    )
     workout_date = models.DateField()
     notes = models.TextField(blank=True)
 
