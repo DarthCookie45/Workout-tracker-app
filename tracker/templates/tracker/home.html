@@ -14,7 +14,7 @@
 
   <!-- Stats Cards -->
   <div class="row mb-4">
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
       <div class="card bg-primary text-light shadow h-100">
         <div class="card-body">
           <h5>Total Workouts</h5>
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
       <div class="card bg-success text-light shadow h-100">
         <div class="card-body">
           <h5>Total Sets</h5>
@@ -32,11 +32,20 @@
       </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
       <div class="card bg-warning text-dark shadow h-100">
         <div class="card-body">
           <h5>Total Volume Lifted</h5>
           <h2>{{ total_weight }} kg</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card bg-info text-dark shadow h-100">
+        <div class="card-body">
+          <h5>Heaviest Lift</h5>
+          <h2>{{ heaviest_lift }} kg</h2>
         </div>
       </div>
     </div>

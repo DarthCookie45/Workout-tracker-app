@@ -60,6 +60,11 @@ def home(request):
         for workout in workouts
     )
 
+    heaviest_lift = max(
+    [float(workout.weight) for workout in workouts],
+    default=0
+)
+
     recent_workouts = workouts[:5]
 
     # Workout volume chart data grouped by muscle group
@@ -88,6 +93,7 @@ def home(request):
         'muscle_group': muscle_group,
         'chart_labels': chart_labels,
         'chart_data': chart_data,
+        'heaviest_lift': heaviest_lift,
     }
 
     return render(request, 'tracker/home.html', context)
