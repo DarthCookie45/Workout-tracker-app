@@ -51,6 +51,27 @@
     </div>
   </div>
 
+  <!-- Recent Activity -->
+  <div class="card bg-dark text-light shadow mb-4">
+    <div class="card-body">
+      <h3 class="mb-3">Recent Activity</h3>
+
+      {% if recent_workouts %}
+      <ul class="list-group">
+        {% for workout in recent_workouts %}
+        <li class="list-group-item d-flex justify-content-between">
+          <span> {{ workout.workout_name }} - {{ workout.exercise }} </span>
+
+          <span> {{ workout.workout_date }} </span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No recent workouts yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
   <!-- Chart Section -->
   <div class="card shadow-sm mb-4">
     <div class="card-body">
