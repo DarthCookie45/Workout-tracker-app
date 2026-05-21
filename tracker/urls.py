@@ -25,4 +25,10 @@ urlpatterns = [
 
     path('register/', views.register, name='register'),
 
+    path(
+    'workout/<int:workout_id>/',
+    views.workout_detail,
+    name='workout_detail'
+    ),
+
 ]

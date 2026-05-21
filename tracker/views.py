@@ -92,6 +92,24 @@ def home(request):
 
     return render(request, 'tracker/home.html', context)
 
+@login_required
+def workout_detail(request, workout_id):
+    workout = get_object_or_404(
+        Workout,
+        id=workout_id,
+        user=request.user
+    )
+
+    context = {
+        'workout': workout
+    }
+
+    return render(
+        request,
+        'tracker/workout_detail.html',
+        context
+    )
+
 
 # Add workout
 @login_required
