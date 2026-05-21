@@ -67,6 +67,11 @@ def home(request):
 
     recent_workouts = workouts[:5]
 
+    muscle_group_counts = defaultdict(int)
+
+    for workout in workouts:
+        muscle_group_counts[workout.muscle_group] += 1
+
     # Workout volume chart data grouped by muscle group
     volume_data = defaultdict(float)
 
@@ -94,6 +99,7 @@ def home(request):
         'chart_labels': chart_labels,
         'chart_data': chart_data,
         'heaviest_lift': heaviest_lift,
+        'muscle_group_counts': dict(muscle_group_counts),
     }
 
     return render(request, 'tracker/home.html', context)

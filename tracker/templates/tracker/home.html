@@ -72,6 +72,30 @@
     </div>
   </div>
 
+  <div class="card bg-dark text-light shadow mb-4">
+    <div class="card-body">
+      <h3 class="mb-3">Workout Split</h3>
+
+      {% if muscle_group_counts %}
+      <div class="row">
+        {% for group, count in muscle_group_counts.items %}
+        <div class="col-md-4 mb-3">
+          <div class="card bg-secondary text-light h-100">
+            <div class="card-body text-center">
+              <h5>{{ group }}</h5>
+              <h2>{{ count }}</h2>
+              <p class="mb-0">workout{{ count|pluralize }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>No workout split data yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
   <!-- Chart Section -->
   <div class="card shadow-sm mb-4">
     <div class="card-body">
