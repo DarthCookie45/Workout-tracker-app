@@ -10,11 +10,13 @@ from django.contrib import messages
 
 # Create your views here.
 # Homepage / Dashboard
-@login_required
 def home(request):
-    workouts = Workout.objects.filter(
-        user=request.user
-    ).order_by('-workout_date')
+    if request.user.is_authenticated:
+        workouts = Workout.objects.filter(
+            user=request.user
+        ).order_by('-workout_date')
+    else:
+        workouts = Workout.objects.none()
 
     search_query = request.GET.get('search', '')
     filter_option = request.GET.get('filter', '')
