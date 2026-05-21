@@ -6,6 +6,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.contrib import messages
 
 # Create your views here.
 # Homepage / Dashboard
@@ -102,6 +103,7 @@ def add_workout(request):
             workout = form.save(commit=False)
             workout.user = request.user
             workout.save()
+            messages.success(request, 'Workout added successfully!')
             return redirect('home')
 
     else:
@@ -131,6 +133,7 @@ def edit_workout(request, workout_id):
 
         if form.is_valid():
             form.save()
+            messages.success(request, 'Workout updated successfully!')
             return redirect('home')
 
     else:
@@ -158,6 +161,7 @@ def delete_workout(request, workout_id):
 
     if request.method == 'POST':
         workout.delete()
+        messages.success(request, 'Workout deleted successfully!')
         return redirect('home')
 
     context = {
