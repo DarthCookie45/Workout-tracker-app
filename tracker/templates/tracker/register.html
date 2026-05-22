@@ -1,10 +1,9 @@
 {% extends "tracker/base.html" %} {% block content %}
-
-<div class="row justify-content-center">
-  <div class="col-md-6">
+<div class="row justify-content-center py-5">
+  <div class="col-md-7 col-lg-6">
     <div class="card bg-dark text-light shadow">
-      <div class="card-body">
-        <h2 class="mb-4">Create Account</h2>
+      <div class="card-body p-4">
+        <h1 class="text-center mb-4">Create Account</h1>
 
         <form method="POST">
           {% csrf_token %} {{ form.as_p }}
@@ -12,7 +11,7 @@
           <button type="submit" class="btn btn-success w-100">Register</button>
         </form>
 
-        <p class="mt-3">
+        <p class="text-center mt-3 mb-0">
           Already have an account?
           <a href="{% url 'login' %}">Login here</a>
         </p>
@@ -20,5 +19,4 @@
     </div>
   </div>
 </div>
-
 {% endblock %}
