@@ -342,11 +342,11 @@
               <thead>
                 <tr>
                   <th>Workout</th>
-                  <th>Exercise</th>
+                  <th class="d-none d-md-table-cell">Exercise</th>
                   <th>Muscle Group</th>
-                  <th>Sets/Reps</th>
-                  <th>Weight</th>
-                  <th>Date</th>
+                  <th class="d-none d-lg-table-cell">Sets/Reps</th>
+                  <th class="d-none d-lg-table-cell">Weight</th>
+                  <th class="d-none d-sm-table-cell">Date</th>
                   <th class="text-end">Actions</th>
                 </tr>
               </thead>
@@ -357,7 +357,7 @@
                 <tr>
                   <td>{{ workout.workout_name }}</td>
 
-                  <td>{{ workout.exercise }}</td>
+                  <td class="d-none d-md-table-cell">{{ workout.exercise }}</td>
 
                   <td>
                     {% if workout.muscle_group == 'Arms' %}
@@ -393,11 +393,17 @@
                     {% endif %}
                   </td>
 
-                  <td>{{ workout.sets }} x {{ workout.reps }}</td>
+                  <td class="d-none d-lg-table-cell">
+                    {{ workout.sets }} x {{ workout.reps }}
+                  </td>
 
-                  <td>{{ workout.weight }} kg</td>
+                  <td class="d-none d-lg-table-cell">
+                    {{ workout.weight }} kg
+                  </td>
 
-                  <td>{{ workout.workout_date }}</td>
+                  <td class="d-none d-sm-table-cell">
+                    {{ workout.workout_date }}
+                  </td>
 
                   <td class="text-end">
                     <a
