@@ -1,3 +1,88 @@
+.card {
+  border: none;
+  border-radius: 1rem;
+}
+
+.workout-card {
+  transition: transform 0.2s ease-in-out,
+              box-shadow 0.2s ease-in-out;
+}
+
+.workout-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35);
+}
+
+.btn {
+  border-radius: 0.75rem;
+}
+
+.sidebar-card {
+  top: 1rem;
+}
+
+footer {
+  border-top: 1px solid #333;
+}
+
+.navbar {
+  margin-left: 250px;
+}
+
+/* Siderbar styles */
+.sidebar {
+  background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
+  border-radius: 1rem;
+  min-height: 100%;
+}
+
+.btn-sidebar {
+  background-color: transparent;
+  border: 1px solid #374151;
+  color: white;
+}
+
+.btn-sidebar:hover {
+  background-color: #2563eb;
+  color: white;
+}
+
+main {
+  padding-left: 1rem;
+}
+
+.sidebar-sticky {
+  position: sticky;
+  top: 1rem;
+}
+
+.dashboard-layout {
+  display: block;
+}
+
+.dashboard-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  z-index: 1000;
+}
+
+.dashboard-sidebar .sidebar {
+  height: 100%;
+  border-radius: 0;
+  overflow-y: auto;
+}
+
+.dashboard-main {
+  margin-left: 250px;
+  padding-left: 2rem;
+  min-width: 0;
+}
+
+
+/* Media query */ 
 @media screen and (max-width: 576px) {
   .navbar .container {
     flex-direction: column;
@@ -27,29 +112,19 @@
   }
 }
 
-.card {
-  border: none;
-  border-radius: 1rem;
-}
+@media screen and (max-width: 991px) {
+  .navbar {
+    margin-left: 0;
+  }
 
-.workout-card {
-  transition: transform 0.2s ease-in-out,
-              box-shadow 0.2s ease-in-out;
-}
+  .dashboard-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
 
-.workout-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35);
-}
-
-.btn {
-  border-radius: 0.75rem;
-}
-
-.sidebar-card {
-  top: 1rem;
-}
-
-footer {
-  border-top: 1px solid #333;
+  .dashboard-main {
+    margin-left: 0;
+    padding-left: 0;
+  }
 }
