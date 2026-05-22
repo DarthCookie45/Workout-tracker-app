@@ -302,11 +302,12 @@
         </div>
       </form>
 
+      <!-- Workout Cards -->
       {% if workouts %}
       <div class="row">
         {% for workout in workouts %}
         <div class="col-md-6 col-xl-4 mb-4">
-          <div class="card bg-dark text-light shadow h-100">
+          <div class="card workout-card bg-dark text-light shadow h-100">
             <div class="card-body">
               <h3 class="card-title">{{ workout.workout_name }}</h3>
 
