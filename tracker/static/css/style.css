@@ -238,7 +238,25 @@ body > .container-fluid {
   font-size: 0.9rem;
 }
 
-/* Mobile */
+.mobile-sidebar-menu {
+  background: #111827;
+  padding: 1rem;
+}
+
+.mobile-sidebar-menu a {
+  display: block;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-sidebar-menu a:hover {
+  background-color: #2563eb;
+}
+
+/* Media Query */
 @media screen and (max-width: 991px) {
   .navbar {
     margin-left: 0;
@@ -252,6 +270,7 @@ body > .container-fluid {
     position: static;
     width: 100%;
     height: auto;
+    display: none;
   }
 
   .sidebar {
