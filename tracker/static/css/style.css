@@ -29,6 +29,10 @@ footer {
   margin-left: 250px;
 }
 
+body {
+  background-color: #f3f4f6;
+}
+
 /* Siderbar styles */
 .sidebar {
   background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
@@ -81,7 +85,110 @@ main {
   min-width: 0;
 }
 
+/* Landing page styles */
+.landing-page {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.landing-card {
+  max-width: 850px;
+  width: 100%;
+  border-radius: 1.25rem;
+}
+
+.landing-footer {
+  margin-top: auto;
+}
+
+.landing-logo {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.12);
+}
+
+/* Login/ register page styles */
+.auth-page {
+  min-height: calc(100vh - 220px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 390px;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.auth-logo {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.auth-card h2 {
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+}
+
+.auth-subtitle {
+  letter-spacing: 3px;
+  color: #6b7280;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.auth-card form {
+  text-align: left;
+}
+
+.auth-card input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  padding: 0.6rem;
+}
+
+.auth-card label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.auth-card .helptext,
+.auth-card ul {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.auth-link {
+  margin-top: 1rem;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
 /* Media query */ 
 @media screen and (max-width: 576px) {
   .navbar .container {
