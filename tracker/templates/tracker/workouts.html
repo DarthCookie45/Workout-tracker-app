@@ -1,0 +1,333 @@
+{% extends "tracker/base.html" %} {% block content %}
+
+<div class="container-fluid py-4">
+  <div class="dashboard-layout">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar p-4">
+        <div class="sidebar-brand mb-4">
+          <div class="sidebar-logo">
+            <i class="fa-solid fa-dumbbell"></i>
+          </div>
+
+          <div>
+            <h5 class="mb-0 text-white">WORKOUT</h5>
+            <small class="text-light">TRACKER</small>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <a href="{% url 'home' %}" class="btn btn-sidebar">
+            <i class="fa-solid fa-house me-2"></i>
+            Dashboard
+          </a>
+
+          <a href="{% url 'workouts' %}" class="btn btn-sidebar active-sidebar">
+            <i class="fa-solid fa-dumbbell me-2"></i>
+            Workouts
+          </a>
+
+          <a href="{% url 'progress' %}" class="btn btn-sidebar">
+            <i class="fa-solid fa-chart-line me-2"></i>
+            Progress
+          </a>
+
+          <a href="{% url 'calendar' %}" class="btn btn-sidebar">
+            <i class="fa-solid fa-calendar-days me-2"></i>
+            Calendar
+          </a>
+
+          <a href="{% url 'profile' %}" class="btn btn-sidebar">
+            <i class="fa-solid fa-user me-2"></i>
+            Profile
+          </a>
+
+          <a href="{% url 'logout' %}" class="btn btn-sidebar">
+            <i class="fa-solid fa-right-from-bracket me-2"></i>
+            Logout
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold">Workouts</h1>
+
+        <a href="{% url 'add_workout' %}" class="btn btn-primary">
+          + Add Workout
+        </a>
+      </div>
+
+      <form method="GET" class="mb-4">
+        <div class="row g-2">
+          <div class="col-md-5">
+            <input
+              type="text"
+              name="search"
+              class="form-control"
+              placeholder="Search workouts..."
+              value="{{ search_query }}"
+            />
+          </div>
+
+          <div class="col-md-3">
+            <select name="filter" class="form-select">
+              <option value="">All Workouts</option>
+
+              <option
+                value="newest"
+                {%
+                if
+                filter_option=""
+                ="newest"
+                %}selected{%
+                endif
+                %}
+              >
+                Most Recent
+              </option>
+
+              <option
+                value="oldest"
+                {%
+                if
+                filter_option=""
+                ="oldest"
+                %}selected{%
+                endif
+                %}
+              >
+                Oldest
+              </option>
+
+              <option
+                value="highest_volume"
+                {%
+                if
+                filter_option=""
+                ="highest_volume"
+                %}selected{%
+                endif
+                %}
+              >
+                Highest Volume
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <select name="muscle_group" class="form-select">
+              <option value="">All Muscle Groups</option>
+
+              <option
+                value="Arms"
+                {%
+                if
+                muscle_group=""
+                ="Arms"
+                %}selected{%
+                endif
+                %}
+              >
+                Arms
+              </option>
+
+              <option
+                value="Chest"
+                {%
+                if
+                muscle_group=""
+                ="Chest"
+                %}selected{%
+                endif
+                %}
+              >
+                Chest
+              </option>
+
+              <option
+                value="Back"
+                {%
+                if
+                muscle_group=""
+                ="Back"
+                %}selected{%
+                endif
+                %}
+              >
+                Back
+              </option>
+
+              <option
+                value="Legs"
+                {%
+                if
+                muscle_group=""
+                ="Legs"
+                %}selected{%
+                endif
+                %}
+              >
+                Legs
+              </option>
+
+              <option
+                value="Shoulders"
+                {%
+                if
+                muscle_group=""
+                ="Shoulders"
+                %}selected{%
+                endif
+                %}
+              >
+                Shoulders
+              </option>
+
+              <option
+                value="Core"
+                {%
+                if
+                muscle_group=""
+                ="Core"
+                %}selected{%
+                endif
+                %}
+              >
+                Core
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-1 d-grid">
+            <button class="btn btn-primary" type="submit">Go</button>
+
+            <a
+              href="{% url 'workouts' %}"
+              class="btn btn-outline-secondary mt-2"
+            >
+              Reset
+            </a>
+          </div>
+        </div>
+      </form>
+
+      {% if workouts %}
+
+      <div class="card bg-white text-dark shadow mb-4">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Workout</th>
+                  <th class="d-none d-md-table-cell">Exercise</th>
+                  <th>Muscle Group</th>
+                  <th class="d-none d-lg-table-cell">Sets/Reps</th>
+                  <th class="d-none d-lg-table-cell">Weight</th>
+                  <th class="d-none d-sm-table-cell">Date</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for workout in workouts %}
+                <tr>
+                  <td>{{ workout.workout_name }}</td>
+
+                  <td class="d-none d-md-table-cell">{{ workout.exercise }}</td>
+
+                  <td>
+                    {% if workout.muscle_group == 'Arms' %}
+                    <span class="badge bg-primary"
+                      >{{ workout.muscle_group }}</span
+                    >
+
+                    {% elif workout.muscle_group == 'Chest' %}
+                    <span class="badge bg-danger"
+                      >{{ workout.muscle_group }}</span
+                    >
+
+                    {% elif workout.muscle_group == 'Legs' %}
+                    <span class="badge bg-success"
+                      >{{ workout.muscle_group }}</span
+                    >
+
+                    {% elif workout.muscle_group == 'Back' %}
+                    <span class="badge bg-dark"
+                      >{{ workout.muscle_group }}</span
+                    >
+
+                    {% elif workout.muscle_group == 'Shoulders' %}
+                    <span class="badge bg-warning text-dark"
+                      >{{ workout.muscle_group }}</span
+                    >
+
+                    {% elif workout.muscle_group == 'Core' %}
+                    <span class="badge bg-info"
+                      >{{ workout.muscle_group }}</span
+                    >
+
+                    {% endif %}
+                  </td>
+
+                  <td class="d-none d-lg-table-cell">
+                    {{ workout.sets }} x {{ workout.reps }}
+                  </td>
+
+                  <td class="d-none d-lg-table-cell">
+                    {{ workout.weight }} kg
+                  </td>
+
+                  <td class="d-none d-sm-table-cell">
+                    {{ workout.workout_date }}
+                  </td>
+
+                  <td class="text-end">
+                    <a
+                      href="{% url 'workout_detail' workout.id %}"
+                      class="btn btn-info btn-sm"
+                    >
+                      View
+                    </a>
+
+                    <a
+                      href="{% url 'edit_workout' workout.id %}"
+                      class="btn btn-warning btn-sm"
+                    >
+                      Edit
+                    </a>
+
+                    <a
+                      href="{% url 'delete_workout' workout.id %}"
+                      class="btn btn-danger btn-sm"
+                    >
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {% else %}
+
+      <div class="card bg-white text-dark p-5 text-center shadow">
+        <h3>No workouts added yet</h3>
+
+        <p class="mb-4">Start tracking your training progress.</p>
+
+        <a href="{% url 'add_workout' %}" class="btn btn-success">
+          Add Your First Workout
+        </a>
+      </div>
+
+      {% endif %}
+    </main>
+  </div>
+</div>
+
+{% endblock %}

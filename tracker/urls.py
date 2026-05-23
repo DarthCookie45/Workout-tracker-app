@@ -31,4 +31,9 @@ urlpatterns = [
     name='workout_detail'
     ),
 
+    path('workouts/', views.workouts, name='workouts'),
+    path('progress/', views.progress, name='progress'),
+    path('calendar/', views.calendar, name='calendar'),
+    path('profile/', views.profile, name='profile'),
+
 ]

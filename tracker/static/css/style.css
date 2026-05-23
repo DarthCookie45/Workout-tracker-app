@@ -1,72 +1,55 @@
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f3f4f6;
+}
+
+body > .container-fluid {
+  flex: 1;
+}
+
+/* Global */
 .card {
   border: none;
   border-radius: 1rem;
-}
-
-.workout-card {
-  transition: transform 0.2s ease-in-out,
-              box-shadow 0.2s ease-in-out;
-}
-
-.workout-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35);
 }
 
 .btn {
   border-radius: 0.75rem;
 }
 
-.sidebar-card {
-  top: 1rem;
-}
-
-footer {
-  border-top: 1px solid #333;
-}
-
+/* Navbar */
 .navbar {
   margin-left: 250px;
 }
 
-body {
-  background-color: #f3f4f6;
+.nav-profile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: #111827;
+  font-weight: 600;
 }
 
-/* Siderbar styles */
-.sidebar {
-  background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
-  border-radius: 1rem;
-  min-height: 100%;
+.nav-profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.btn-sidebar {
-  background-color: transparent;
-  border: 1px solid #374151;
-  color: white;
-  text-align: left;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.35rem;
-}
-
-.btn-sidebar:hover {
-  background-color: #2563eb;
-  color: white;
-}
-
-main {
-  padding-left: 1rem;
-}
-
-.sidebar-sticky {
-  position: sticky;
-  top: 1rem;
-}
-
-.dashboard-layout {
-  display: block;
-}
-
+/* Sidebar */
 .dashboard-sidebar {
   position: fixed;
   top: 0;
@@ -76,16 +59,22 @@ main {
   z-index: 1000;
 }
 
-.dashboard-sidebar .sidebar {
+.sidebar {
   height: 100%;
+  background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
   border-radius: 0;
   overflow-y: auto;
 }
 
 .dashboard-main {
+  flex: 1;
   margin-left: 250px;
   padding-left: 2rem;
   min-width: 0;
+}
+
+.dashboard-layout {
+  display: flex;
 }
 
 .sidebar-brand {
@@ -105,15 +94,52 @@ main {
   justify-content: center;
 }
 
+.btn-sidebar {
+  background-color: transparent;
+  border: 1px solid #374151;
+  color: white;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.btn-sidebar:hover,
 .active-sidebar {
   background-color: #2563eb;
   border-color: #2563eb;
   color: white;
 }
 
-/* Landing page styles */
+/* Workout cards */
+.workout-card {
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
+
+.workout-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35);
+}
+
+/* Stat cards */
+.stat-card {
+  border-left: 4px solid #2563eb;
+}
+
+.stat-card h5 {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.stat-card h2 {
+  color: #111827;
+  font-weight: 800;
+}
+
+/* Landing page */
 .landing-page {
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 2rem);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,10 +149,6 @@ main {
   max-width: 850px;
   width: 100%;
   border-radius: 1.25rem;
-}
-
-.landing-footer {
-  margin-top: auto;
 }
 
 .landing-logo {
@@ -143,9 +165,9 @@ main {
   box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.12);
 }
 
-/* Login/ register page styles */
+/* Login / register pages */
 .auth-page {
-  min-height: calc(100vh - 220px);
+  min-height: calc(100vh - 2rem);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -216,22 +238,32 @@ main {
   font-size: 0.9rem;
 }
 
-/* Stats card styles */
-.stat-card {
-  border-left: 4px solid #2563eb;
+/* Mobile */
+@media screen and (max-width: 991px) {
+  .navbar {
+    margin-left: 0;
+  }
+
+  .dashboard-layout {
+    display: block;
+  }
+
+  .dashboard-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .sidebar {
+    border-radius: 1rem;
+  }
+
+  .dashboard-main {
+    margin-left: 0;
+    padding-left: 0;
+  }
 }
 
-.stat-card h5 {
-  color: #6b7280;
-  font-size: 0.9rem;
-}
-
-.stat-card h2 {
-  color: #111827;
-  font-weight: 800;
-}
-
-/* Media query */ 
 @media screen and (max-width: 576px) {
   .navbar .container {
     flex-direction: column;
@@ -258,22 +290,5 @@ main {
 
   .card-footer .btn {
     width: 100%;
-  }
-}
-
-@media screen and (max-width: 991px) {
-  .navbar {
-    margin-left: 0;
-  }
-
-  .dashboard-sidebar {
-    position: static;
-    width: 100%;
-    height: auto;
-  }
-
-  .dashboard-main {
-    margin-left: 0;
-    padding-left: 0;
   }
 }

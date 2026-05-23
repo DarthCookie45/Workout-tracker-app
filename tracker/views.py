@@ -107,6 +107,46 @@ def home(request):
     return render(request, 'tracker/home.html', context)
 
 @login_required
+def workouts(request):
+    workouts = Workout.objects.filter(
+        user=request.user
+    ).order_by('-workout_date')
+
+    context = {
+        'workouts': workouts
+    }
+
+    return render(
+        request,
+        'tracker/workouts.html',
+        context
+    )
+
+
+@login_required
+def progress(request):
+    return render(
+        request,
+        'tracker/progress.html'
+    )
+
+
+@login_required
+def calendar(request):
+    return render(
+        request,
+        'tracker/calendar.html'
+    )
+
+
+@login_required
+def profile(request):
+    return render(
+        request,
+        'tracker/profile.html'
+    )
+
+@login_required
 def workout_detail(request, workout_id):
     workout = get_object_or_404(
         Workout,
