@@ -44,6 +44,9 @@ body {
   background-color: transparent;
   border: 1px solid #374151;
   color: white;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.35rem;
 }
 
 .btn-sidebar:hover {
@@ -83,6 +86,29 @@ main {
   margin-left: 250px;
   padding-left: 2rem;
   min-width: 0;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sidebar-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active-sidebar {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: white;
 }
 
 /* Landing page styles */
@@ -189,6 +215,22 @@ main {
   margin-bottom: 0;
   font-size: 0.9rem;
 }
+
+/* Stats card styles */
+.stat-card {
+  border-left: 4px solid #2563eb;
+}
+
+.stat-card h5 {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.stat-card h2 {
+  color: #111827;
+  font-weight: 800;
+}
+
 /* Media query */ 
 @media screen and (max-width: 576px) {
   .navbar .container {
