@@ -43,3 +43,20 @@ class Workout(models.Model):
 
     def __str__(self):
         return f"{self.workout_name} - {self.exercise}"
+    
+class WorkoutRoutine(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    workout_date = models.DateField()
+    notes = models.TextField(blank=True)
+
+class Exercise(models.Model):
+    routine = models.ForeignKey(
+        WorkoutRoutine,
+        on_delete=models.CASCADE,
+        related_name='exercises'
+    )
+    name = models.CharField(max_length=100)
+    sets = models.PositiveIntegerField()
+    reps = models.CharField(max_length=20)
+    weight = models.DecimalField(max_digits=6, decimal_places=2)

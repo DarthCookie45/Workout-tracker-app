@@ -1,0 +1,44 @@
+{% extends "tracker/base.html" %} {% block content %}
+
+<div class="container-fluid py-4">
+  <div class="dashboard-layout">
+    {% include "tracker/includes/sidebar.html" %}
+
+    <main class="dashboard-main">
+      <div class="card bg-white text-dark shadow">
+        <div class="card-body">
+          <a
+            href="{% url 'routine_detail' routine.id %}"
+            class="btn btn-outline-secondary mb-3"
+          >
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Back to Routine
+          </a>
+
+          <h1>Delete Exercise</h1>
+
+          <p>
+            Are you sure you want to delete
+            <strong>{{ exercise.name }}</strong>
+            from <strong>{{ routine.name }}</strong>?
+          </p>
+
+          <form method="POST">
+            {% csrf_token %}
+
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+
+            <a
+              href="{% url 'routine_detail' routine.id %}"
+              class="btn btn-outline-secondary"
+            >
+              Cancel
+            </a>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+{% endblock %}

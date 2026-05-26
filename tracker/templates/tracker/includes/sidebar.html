@@ -1,0 +1,46 @@
+<aside class="dashboard-sidebar">
+  <div class="sidebar p-4">
+    <div class="sidebar-brand mb-4">
+      <div class="sidebar-logo">
+        <i class="fa-solid fa-dumbbell"></i>
+      </div>
+
+      <div>
+        <h5 class="mb-0 text-white">WORKOUT</h5>
+        <small class="text-light">TRACKER</small>
+      </div>
+    </div>
+
+    <div class="d-grid gap-2">
+      <a href="{% url 'home' %}" class="btn btn-sidebar">
+        <i class="fa-solid fa-house me-2"></i>
+        Dashboard
+      </a>
+
+      <a href="{% url 'workouts' %}" class="btn btn-sidebar">
+        <i class="fa-solid fa-dumbbell me-2"></i>
+        Workouts
+      </a>
+
+      <a href="{% url 'progress' %}" class="btn btn-sidebar">
+        <i class="fa-solid fa-chart-line me-2"></i>
+        Progress
+      </a>
+
+      <a href="{% url 'calendar' %}" class="btn btn-sidebar">
+        <i class="fa-solid fa-calendar-days me-2"></i>
+        Calendar
+      </a>
+
+      <a href="{% url 'profile' %}" class="btn btn-sidebar">
+        <i class="fa-solid fa-user me-2"></i>
+        Profile
+      </a>
+
+      <a href="{% url 'logout' %}" class="btn btn-sidebar">
+        <i class="fa-solid fa-right-from-bracket me-2"></i>
+        Logout
+      </a>
+    </div>
+  </div>
+</aside>

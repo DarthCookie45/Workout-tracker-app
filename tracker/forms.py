@@ -1,5 +1,7 @@
 from django import forms
 from .models import Workout
+from .models import WorkoutRoutine
+from .models import Exercise
 
 class WorkoutForm(forms.ModelForm):
     class Meta:
@@ -50,4 +52,51 @@ class WorkoutForm(forms.ModelForm):
                 'rows': 4,
                 'placeholder': 'Additional notes about the workout...'
             })
+        }
+
+class WorkoutRoutineForm(forms.ModelForm):
+    class Meta:
+        model = WorkoutRoutine
+        fields = [
+            'name',
+            'workout_date',
+            'notes',
+        ]
+
+        widgets = {
+            'workout_date': forms.DateInput(
+                attrs={
+                    'type': 'date',
+                    'class': 'form-control'
+                }
+            )
+        }
+
+class ExerciseForm(forms.ModelForm):
+    class Meta:
+        model = Exercise
+
+        fields = [
+            'name',
+            'sets',
+            'reps',
+            'weight',
+        ]
+
+        widgets = {
+            'name': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'sets': forms.NumberInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'reps': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'weight': forms.NumberInput(
+                attrs={'class': 'form-control'}
+            ),
         }

@@ -1,0 +1,32 @@
+{% extends "tracker/base.html" %} {% block content %}
+
+<div class="container-fluid py-4">
+  <div class="dashboard-layout">
+    {% include "tracker/includes/sidebar.html" %}
+
+    <main class="dashboard-main">
+      <div class="card bg-white text-dark shadow">
+        <div class="card-body">
+          <a href="{% url 'workouts' %}" class="btn btn-outline-secondary mb-3">
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Back to Workouts
+          </a>
+
+          <h1 class="mb-4">Add Workout Routine</h1>
+
+          <form method="POST">
+            {% csrf_token %} {{ form.as_p }}
+
+            <button type="submit" class="btn btn-success">Save Routine</button>
+
+            <a href="{% url 'workouts' %}" class="btn btn-outline-secondary">
+              Cancel
+            </a>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+{% endblock %}

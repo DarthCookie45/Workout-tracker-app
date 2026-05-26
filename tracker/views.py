@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Workout
-from .forms import WorkoutForm
+from .models import Workout, WorkoutRoutine, Exercise
+from .forms import WorkoutForm, WorkoutRoutineForm, ExerciseForm
 from collections import defaultdict
 import json
 from django.contrib.auth.decorators import login_required
@@ -108,12 +108,12 @@ def home(request):
 
 @login_required
 def workouts(request):
-    workouts = Workout.objects.filter(
+    routines = WorkoutRoutine.objects.filter(
         user=request.user
     ).order_by('-workout_date')
 
     context = {
-        'workouts': workouts
+        'routines': routines
     }
 
     return render(
@@ -263,4 +263,183 @@ def register(request):
         request,
         'tracker/register.html',
         {'form': form}
+    )
+
+@login_required
+def add_routine(request):
+    if request.method == "POST":
+        form = WorkoutRoutineForm(request.POST)
+
+        if form.is_valid():
+            routine = form.save(commit=False)
+            routine.user = request.user
+            routine.save()
+            messages.success(request, "Workout routine added successfully.")
+            return redirect('workouts')
+
+    else:
+        form = WorkoutRoutineForm()
+
+    return render(
+        request,
+        'tracker/add_routine.html',
+        {'form': form}
+    )
+
+@login_required
+def routine_detail(request, routine_id):
+    routine = get_object_or_404(
+        WorkoutRoutine,
+        id=routine_id,
+        user=request.user
+    )
+
+    exercises = routine.exercises.all()
+
+    context = {
+        'routine': routine,
+        'exercises': exercises,
+    }
+
+    return render(
+        request,
+        'tracker/routine_detail.html',
+        context
+    )
+
+@login_required
+def add_exercise(request, routine_id):
+    routine = get_object_or_404(
+        WorkoutRoutine,
+        id=routine_id,
+        user=request.user
+    )
+
+    if request.method == "POST":
+        form = ExerciseForm(request.POST)
+
+        if form.is_valid():
+            exercise = form.save(commit=False)
+            exercise.routine = routine
+            exercise.save()
+            messages.success(request, "Exercise added successfully.")
+            return redirect('routine_detail', routine_id=routine.id)
+
+    else:
+        form = ExerciseForm()
+
+    return render(
+        request,
+        'tracker/add_exercise.html',
+        {
+            'form': form,
+            'routine': routine
+        }
+    )
+
+@login_required
+def edit_exercise(request, exercise_id):
+    exercise = get_object_or_404(
+        Exercise,
+        id=exercise_id,
+        routine__user=request.user
+    )
+
+    routine = exercise.routine
+
+    if request.method == "POST":
+        form = ExerciseForm(
+            request.POST,
+            instance=exercise
+        )
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Exercise updated successfully.")
+            return redirect('routine_detail', routine_id=routine.id)
+
+    else:
+        form = ExerciseForm(instance=exercise)
+
+    return render(
+        request,
+        'tracker/edit_exercise.html',
+        {
+            'form': form,
+            'routine': routine
+        }
+    )
+
+@login_required
+def delete_exercise(request, exercise_id):
+    exercise = get_object_or_404(
+        Exercise,
+        id=exercise_id,
+        routine__user=request.user
+    )
+
+    routine = exercise.routine
+
+    if request.method == "POST":
+        exercise.delete()
+        messages.success(request, "Exercise deleted successfully.")
+        return redirect('routine_detail', routine_id=routine.id)
+
+    return render(
+        request,
+        'tracker/delete_exercise.html',
+        {
+            'exercise': exercise,
+            'routine': routine
+        }
+    )
+
+@login_required
+def edit_routine(request, routine_id):
+    routine = get_object_or_404(
+        WorkoutRoutine,
+        id=routine_id,
+        user=request.user
+    )
+
+    if request.method == "POST":
+        form = WorkoutRoutineForm(
+            request.POST,
+            instance=routine
+        )
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Workout routine updated successfully.")
+            return redirect('workouts')
+
+    else:
+        form = WorkoutRoutineForm(instance=routine)
+
+    return render(
+        request,
+        'tracker/edit_routine.html',
+        {
+            'form': form,
+            'routine': routine
+        }
+    )
+
+@login_required
+def delete_routine(request, routine_id):
+    routine = get_object_or_404(
+        WorkoutRoutine,
+        id=routine_id,
+        user=request.user
+    )
+
+    if request.method == "POST":
+        routine.delete()
+        messages.success(request, "Workout routine deleted successfully.")
+        return redirect('workouts')
+
+    return render(
+        request,
+        'tracker/delete_routine.html',
+        {'routine': routine}
     )
