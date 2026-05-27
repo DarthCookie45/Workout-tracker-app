@@ -120,3 +120,5 @@ STATIC_URL = 'static/'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
+
+API_NINJAS_KEY = "BsEXTHSd6nmnkYdpUJBFAE2v3uYArfWv7an1XEol"

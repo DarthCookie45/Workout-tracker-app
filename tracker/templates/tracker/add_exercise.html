@@ -17,6 +17,14 @@
 
           <h1>Add Exercise to {{ routine.name }}</h1>
 
+          <a
+            href="{% url 'exercise_library' routine.id %}"
+            class="btn btn-primary mb-3"
+          >
+            <i class="fa-solid fa-book-open me-2"></i>
+            Browse Exercise Library
+          </a>
+
           <form method="POST">
             {% csrf_token %} {{ form.as_p }}
 

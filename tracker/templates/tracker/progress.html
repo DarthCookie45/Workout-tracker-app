@@ -1,8 +1,101 @@
 {% extends "tracker/base.html" %} {% block content %}
 
 <div class="container-fluid py-4">
-  <h1>Progress</h1>
-  <p>This page will contain progress tracking features.</p>
+  <div class="dashboard-layout">
+    {% include "tracker/includes/sidebar.html" %}
+
+    <main class="dashboard-main">
+      <h1 class="fw-bold mb-4">Progress</h1>
+
+      <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+          <div class="card stat-card bg-white text-dark shadow h-100">
+            <div class="card-body">
+              <h5>Total Routines</h5>
+              <h2>{{ total_routines }}</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <div class="card stat-card bg-white text-dark shadow h-100">
+            <div class="card-body">
+              <h5>Total Exercises</h5>
+              <h2>{{ total_exercises }}</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <div class="card stat-card bg-white text-dark shadow h-100">
+            <div class="card-body">
+              <h5>Total Sets</h5>
+              <h2>{{ total_sets }}</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <div class="card stat-card bg-white text-dark shadow h-100">
+            <div class="card-body">
+              <h5>Heaviest Lift</h5>
+              <h2>{{ heaviest_lift }} kg</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-white text-dark shadow">
+        <div class="card-body">
+          <h3>Training Summary</h3>
+
+          <p>
+            <strong>Total volume:</strong>
+            {{ total_volume }} kg
+          </p>
+
+          <p class="text-muted mb-0">
+            Your total volume is calculated from your saved routine exercises.
+          </p>
+        </div>
+      </div>
+
+      <div class="card bg-white text-dark shadow mt-4">
+        <div class="card-body">
+          <h3>Volume by Routine</h3>
+
+          <canvas id="progressChart" height="120"></canvas>
+        </div>
+      </div>
+    </main>
+  </div>
 </div>
+
+<script>
+  const progressLabels = {{ volume_labels|safe }};
+  const progressData = {{ volume_data|safe }};
+
+  const progressCtx = document.getElementById('progressChart');
+
+  new Chart(progressCtx, {
+    type: 'bar',
+    data: {
+      labels: progressLabels,
+      datasets: [{
+        label: 'Routine Volume',
+        data: progressData,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
 
 {% endblock %}

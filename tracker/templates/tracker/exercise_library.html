@@ -1,0 +1,313 @@
+{% extends "tracker/base.html" %} {% block content %}
+
+<div class="container-fluid py-4">
+  <div class="dashboard-layout">
+    {% include "tracker/includes/sidebar.html" %}
+
+    <main class="dashboard-main">
+      <div class="card bg-white text-dark shadow">
+        <div class="card-body">
+          <a
+            href="{% url 'routine_detail' routine.id %}"
+            class="btn btn-outline-secondary mb-3"
+          >
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Back to Routine
+          </a>
+
+          <h1 class="fw-bold mb-3">Exercise Library</h1>
+
+          <p class="text-muted">
+            Search for exercises to add to {{ routine.name }}.
+          </p>
+
+          <p class="text-muted small">
+            Search by exercise name or muscle group. Difficulty can be used to
+            narrow down your results.
+          </p>
+
+          <form method="GET" class="mb-4">
+            <div class="row g-2">
+              <div class="col-md-4">
+                <input
+                  type="text"
+                  name="name"
+                  class="form-control"
+                  placeholder="Search exercise name..."
+                  value="{{ exercise_name }}"
+                />
+              </div>
+
+              <div class="col-md-3">
+                <select name="muscle" class="form-select">
+                  <option value="">All Muscles</option>
+                  <option
+                    value="biceps"
+                    {%
+                    if
+                    muscle=""
+                    ="biceps"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Biceps
+                  </option>
+                  <option
+                    value="triceps"
+                    {%
+                    if
+                    muscle=""
+                    ="triceps"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Triceps
+                  </option>
+                  <option
+                    value="chest"
+                    {%
+                    if
+                    muscle=""
+                    ="chest"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Chest
+                  </option>
+                  <option
+                    value="lats"
+                    {%
+                    if
+                    muscle=""
+                    ="lats"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Lats
+                  </option>
+                  <option
+                    value="lower_back"
+                    {%
+                    if
+                    muscle=""
+                    ="lower_back"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Lower Back
+                  </option>
+                  <option
+                    value="quadriceps"
+                    {%
+                    if
+                    muscle=""
+                    ="quadriceps"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Quadriceps
+                  </option>
+                  <option
+                    value="hamstrings"
+                    {%
+                    if
+                    muscle=""
+                    ="hamstrings"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Hamstrings
+                  </option>
+                  <option
+                    value="glutes"
+                    {%
+                    if
+                    muscle=""
+                    ="glutes"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Glutes
+                  </option>
+                  <option
+                    value="shoulders"
+                    {%
+                    if
+                    muscle=""
+                    ="shoulders"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Shoulders
+                  </option>
+                  <option
+                    value="abdominals"
+                    {%
+                    if
+                    muscle=""
+                    ="abdominals"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Abdominals
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-md-3">
+                <select name="difficulty" class="form-select">
+                  <option value="">All Difficulties</option>
+
+                  <option
+                    value="beginner"
+                    {%
+                    if
+                    difficulty=""
+                    ="beginner"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Beginner
+                  </option>
+
+                  <option
+                    value="intermediate"
+                    {%
+                    if
+                    difficulty=""
+                    ="intermediate"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Intermediate
+                  </option>
+
+                  <option
+                    value="expert"
+                    {%
+                    if
+                    difficulty=""
+                    ="expert"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    Expert
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary">Search</button>
+              </div>
+            </div>
+          </form>
+
+          {% if api_error %}
+          <div class="alert alert-warning">{{ api_error }}</div>
+          {% endif %} {% if exercises %}
+          <div class="row">
+            {% for exercise in exercises %}
+            <div class="col-md-6 col-xl-4 mb-4">
+              <div class="card bg-light text-dark h-100 shadow-sm">
+                <div class="card-body">
+                  <h4>{{ exercise.name }}</h4>
+
+                  <div class="mb-3">
+                    <span class="badge bg-primary"> {{ exercise.type }} </span>
+
+                    <span class="badge bg-secondary">
+                      {{ exercise.muscle }}
+                    </span>
+
+                    {% if exercise.difficulty == "beginner" %}
+                    <span class="badge bg-success">
+                      {{ exercise.difficulty }}
+                    </span>
+
+                    {% elif exercise.difficulty == "intermediate" %}
+                    <span class="badge bg-warning text-dark">
+                      {{ exercise.difficulty }}
+                    </span>
+
+                    {% elif exercise.difficulty == "expert" %}
+                    <span class="badge bg-danger">
+                      {{ exercise.difficulty }}
+                    </span>
+
+                    {% else %}
+                    <span class="badge bg-secondary">
+                      {{ exercise.difficulty }}
+                    </span>
+                    {% endif %}
+                  </div>
+
+                  <p>
+                    <strong>Equipment:</strong>
+                    {% if exercise.equipment %} {{ exercise.equipment }} {% else
+                    %} Not specified {% endif %}
+                  </p>
+
+                  {% if exercise.instructions %}
+                  <div class="collapse" id="instructions{{ forloop.counter }}">
+                    <p class="small text-muted">{{ exercise.instructions }}</p>
+                  </div>
+
+                  <button
+                    class="btn btn-outline-secondary btn-sm mb-3"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#instructions{{ forloop.counter }}"
+                    aria-expanded="false"
+                  >
+                    Show instructions
+                  </button>
+                  {% endif %}
+
+                  <a
+                    href="{% url 'add_exercise' routine.id %}?name={{ exercise.name }}"
+                    class="btn btn-success w-100"
+                  >
+                    Use Exercise
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          {% elif exercise_name or muscle %}
+          <p>No exercises found. Try a different search or muscle group.</p>
+
+          {% else %}
+          <div class="alert alert-info">
+            Enter an exercise name or choose a muscle group. Difficulty can be
+            used to narrow the results.
+          </div>
+          {% endif %}
+
+          <a
+            href="{% url 'add_exercise' routine.id %}"
+            class="btn btn-outline-primary"
+          >
+            Add Exercise Manually
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+{% endblock %}

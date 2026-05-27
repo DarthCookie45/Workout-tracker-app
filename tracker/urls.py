@@ -74,4 +74,9 @@ urlpatterns = [
     name='delete_routine'
     ),
 
+    path(
+    'workouts/<int:routine_id>/exercise-library/',
+    views.exercise_library,
+    name='exercise_library'
+    ),
 ]

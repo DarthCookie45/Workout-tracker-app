@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib import messages
+import requests
+from django.conf import settings
 
 # Create your views here.
 # Homepage / Dashboard
@@ -106,6 +108,7 @@ def home(request):
 
     return render(request, 'tracker/home.html', context)
 
+# Workouts
 @login_required
 def workouts(request):
     routines = WorkoutRoutine.objects.filter(
@@ -122,15 +125,58 @@ def workouts(request):
         context
     )
 
-
+# Progress view
 @login_required
 def progress(request):
-    return render(
-        request,
-        'tracker/progress.html'
+    routines = WorkoutRoutine.objects.filter(user=request.user)
+    exercises = Exercise.objects.filter(routine__user=request.user)
+
+    total_routines = routines.count()
+    total_exercises = exercises.count()
+
+    total_sets = sum(exercise.sets for exercise in exercises)
+
+    total_volume = sum(
+        float(exercise.weight) * exercise.sets
+        for exercise in exercises
     )
 
+    heaviest_lift = max(
+        [float(exercise.weight) for exercise in exercises],
+        default=0
+    )
 
+    volume_labels = []
+    volume_data = []
+
+    for routine in routines:
+        routine_volume = sum(
+            float(exercise.weight) * exercise.sets
+            for exercise in routine.exercises.all()
+        )
+
+    volume_labels.append(routine.name)
+    volume_data.append(routine_volume)
+
+    context = {
+        'total_routines': total_routines,
+        'total_exercises': total_exercises,
+        'total_sets': total_sets,
+        'total_volume': total_volume,
+        'heaviest_lift': heaviest_lift,
+        'volume_labels': json.dumps(volume_labels),
+        'volume_data': json.dumps(volume_data),
+        'volume_labels': json.dumps(volume_labels),
+        'volume_data': json.dumps(volume_data),
+    }
+
+    return render(
+        request,
+        'tracker/progress.html',
+        context
+    )
+
+# Calendar view
 @login_required
 def calendar(request):
     return render(
@@ -138,7 +184,7 @@ def calendar(request):
         'tracker/calendar.html'
     )
 
-
+# profile view
 @login_required
 def profile(request):
     return render(
@@ -146,6 +192,7 @@ def profile(request):
         'tracker/profile.html'
     )
 
+# View workout details
 @login_required
 def workout_detail(request, workout_id):
     workout = get_object_or_404(
@@ -265,6 +312,7 @@ def register(request):
         {'form': form}
     )
 
+# Add workout routine
 @login_required
 def add_routine(request):
     if request.method == "POST":
@@ -286,6 +334,7 @@ def add_routine(request):
         {'form': form}
     )
 
+# View routine
 @login_required
 def routine_detail(request, routine_id):
     routine = get_object_or_404(
@@ -307,6 +356,7 @@ def routine_detail(request, routine_id):
         context
     )
 
+# Add exercise
 @login_required
 def add_exercise(request, routine_id):
     routine = get_object_or_404(
@@ -326,7 +376,11 @@ def add_exercise(request, routine_id):
             return redirect('routine_detail', routine_id=routine.id)
 
     else:
-        form = ExerciseForm()
+        initial_data = {
+            'name': request.GET.get('name', '')
+        }
+
+        form = ExerciseForm(initial=initial_data)
 
     return render(
         request,
@@ -337,6 +391,7 @@ def add_exercise(request, routine_id):
         }
     )
 
+# Edit exercise
 @login_required
 def edit_exercise(request, exercise_id):
     exercise = get_object_or_404(
@@ -370,6 +425,7 @@ def edit_exercise(request, exercise_id):
         }
     )
 
+# Delete exercise
 @login_required
 def delete_exercise(request, exercise_id):
     exercise = get_object_or_404(
@@ -394,6 +450,7 @@ def delete_exercise(request, exercise_id):
         }
     )
 
+# Edit routine
 @login_required
 def edit_routine(request, routine_id):
     routine = get_object_or_404(
@@ -425,6 +482,7 @@ def edit_routine(request, routine_id):
         }
     )
 
+# Delete routine
 @login_required
 def delete_routine(request, routine_id):
     routine = get_object_or_404(
@@ -442,4 +500,66 @@ def delete_routine(request, routine_id):
         request,
         'tracker/delete_routine.html',
         {'routine': routine}
+    )
+
+# Exercise library view with API integration
+@login_required
+def exercise_library(request, routine_id):
+    routine = get_object_or_404(
+        WorkoutRoutine,
+        id=routine_id,
+        user=request.user
+    )
+    
+
+    exercise_name = request.GET.get('name', '')
+    muscle = request.GET.get('muscle', '')
+    difficulty = request.GET.get('difficulty', '')
+
+    exercises = []
+    api_error = None
+
+    if exercise_name or muscle:
+        api_url = 'https://api.api-ninjas.com/v1/exercises'
+
+        params = {}
+
+        if exercise_name:
+            params['name'] = exercise_name
+
+        if muscle:
+            params['muscle'] = muscle
+
+        if difficulty:
+            params['difficulty'] = difficulty
+
+        try:
+            response = requests.get(
+                api_url,
+                headers={'X-Api-Key': settings.API_NINJAS_KEY},
+                params=params,
+                timeout=5
+            )
+
+            if response.status_code == 200:
+                exercises = response.json()
+            else:
+                api_error = "Exercise library is unavailable right now."
+
+        except requests.RequestException:
+            api_error = "Exercise library could not be reached. You can still add exercises manually."
+
+    context = {
+        'routine': routine,
+        'exercises': exercises,
+        'exercise_name': exercise_name,
+        'muscle': muscle,
+        'difficulty': difficulty,
+        'api_error': api_error,
+    }
+
+    return render(
+        request,
+        'tracker/exercise_library.html',
+        context
     )
