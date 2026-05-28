@@ -9,6 +9,8 @@ from django.contrib.auth import login
 from django.contrib import messages
 import requests
 from django.conf import settings
+import calendar as calendar_module
+from datetime import date
 
 # Create your views here.
 # Homepage / Dashboard
@@ -179,9 +181,43 @@ def progress(request):
 # Calendar view
 @login_required
 def calendar(request):
+    today = date.today()
+
+    year = int(request.GET.get('year', today.year))
+    month = int(request.GET.get('month', today.month))
+
+    routines = WorkoutRoutine.objects.filter(
+        user=request.user,
+        workout_date__year=year,
+        workout_date__month=month
+    ).order_by('workout_date')
+
+    month_calendar = calendar_module.Calendar(firstweekday=0).monthdatescalendar(
+        year,
+        month
+    )
+
+    routine_lookup = {}
+
+    for routine in routines:
+        routine_lookup.setdefault(
+            routine.workout_date,
+            []
+        ).append(routine)
+
+    context = {
+        'month_calendar': month_calendar,
+        'routine_lookup': routine_lookup,
+        'month_name': calendar_module.month_name[month],
+        'year': year,
+        'month': month,
+        'today': today,
+    }
+
     return render(
         request,
-        'tracker/calendar.html'
+        'tracker/calendar.html',
+        context
     )
 
 # profile view

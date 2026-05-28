@@ -60,3 +60,37 @@ class Exercise(models.Model):
     sets = models.PositiveIntegerField()
     reps = models.CharField(max_length=20)
     weight = models.DecimalField(max_digits=6, decimal_places=2)
+
+class WorkoutSchedule(models.Model):
+
+    DAYS_OF_WEEK = [
+        ('Monday', 'Monday'),
+        ('Tuesday', 'Tuesday'),
+        ('Wednesday', 'Wednesday'),
+        ('Thursday', 'Thursday'),
+        ('Friday', 'Friday'),
+        ('Saturday', 'Saturday'),
+        ('Sunday', 'Sunday'),
+    ]
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+
+    routine = models.ForeignKey(
+        WorkoutRoutine,
+        on_delete=models.CASCADE,
+        related_name='schedules'
+    )
+
+    day = models.CharField(
+        max_length=10,
+        choices=DAYS_OF_WEEK
+    )
+
+    class Meta:
+        unique_together = ['user', 'day']
+
+    def __str__(self):
+        return f"{self.day} - {self.routine.name}"

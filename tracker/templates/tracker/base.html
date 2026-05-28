@@ -40,7 +40,21 @@
           <i class="fa-solid fa-bars"></i>
         </button>
 
-        <a class="navbar-brand" href="{% url 'home' %}"> Dashboard </a>
+        <span class="navbar-brand mb-0 h1">
+          {% if request.resolver_match.url_name == 'home' %} Dashboard {% elif
+          request.resolver_match.url_name == 'workouts' %} Workouts {% elif
+          request.resolver_match.url_name == 'progress' %} Progress {% elif
+          request.resolver_match.url_name == 'calendar' %} Calendar {% elif
+          request.resolver_match.url_name == 'profile' %} Profile {% elif
+          request.resolver_match.url_name == 'routine_detail' %} Workout Details
+          {% elif request.resolver_match.url_name == 'add_routine' %} Add
+          Workout {% elif request.resolver_match.url_name == 'edit_routine' %}
+          Edit Workout {% elif request.resolver_match.url_name == 'add_exercise'
+          %} Add Exercise {% elif request.resolver_match.url_name ==
+          'edit_exercise' %} Edit Exercise {% elif
+          request.resolver_match.url_name == 'exercise_library' %} Exercise
+          Library {% else %} Workout Tracker {% endif %}
+        </span>
 
         <a href="{% url 'profile' %}" class="nav-profile-link ms-auto">
           <span>Welcome back, {{ user.username }}</span>

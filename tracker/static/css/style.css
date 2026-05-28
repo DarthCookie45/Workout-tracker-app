@@ -256,6 +256,57 @@ body > .container-fluid {
   background-color: #2563eb;
 }
 
+/* Calendar */
+.calendar-table {
+  table-layout: fixed;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.calendar-table th {
+  text-align: center;
+  padding: 0.75rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.calendar-cell {
+  height: 130px;
+  vertical-align: top;
+  background: #ffffff;
+  padding: 0.75rem;
+}
+
+.calendar-muted {
+  color: #9ca3af;
+  background: #f9fafb;
+}
+
+.calendar-date {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-workout {
+  display: block;
+  background: #dbeafe;
+  color: #1d4ed8;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.calendar-workout:hover {
+  background: #bfdbfe;
+}
+
+.calendar-card {
+  width: 100%;
+}
+
 /* Media Query */
 @media screen and (max-width: 991px) {
   .navbar {

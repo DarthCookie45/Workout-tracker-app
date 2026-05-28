@@ -12,27 +12,42 @@
     </div>
 
     <div class="d-grid gap-2">
-      <a href="{% url 'home' %}" class="btn btn-sidebar">
+      <a
+        href="{% url 'home' %}"
+        class="btn btn-sidebar {% if request.resolver_match.url_name == 'home' %}active-sidebar{% endif %}"
+      >
         <i class="fa-solid fa-house me-2"></i>
         Dashboard
       </a>
 
-      <a href="{% url 'workouts' %}" class="btn btn-sidebar">
+      <a
+        href="{% url 'workouts' %}"
+        class="btn btn-sidebar {% if request.resolver_match.url_name == 'workouts' %}active-sidebar{% endif %}"
+      >
         <i class="fa-solid fa-dumbbell me-2"></i>
         Workouts
       </a>
 
-      <a href="{% url 'progress' %}" class="btn btn-sidebar">
+      <a
+        href="{% url 'progress' %}"
+        class="btn btn-sidebar {% if request.resolver_match.url_name == 'progress' %}active-sidebar{% endif %}"
+      >
         <i class="fa-solid fa-chart-line me-2"></i>
         Progress
       </a>
 
-      <a href="{% url 'calendar' %}" class="btn btn-sidebar">
+      <a
+        href="{% url 'calendar' %}"
+        class="btn btn-sidebar {% if request.resolver_match.url_name == 'calendar' %}active-sidebar{% endif %}"
+      >
         <i class="fa-solid fa-calendar-days me-2"></i>
         Calendar
       </a>
 
-      <a href="{% url 'profile' %}" class="btn btn-sidebar">
+      <a
+        href="{% url 'profile' %}"
+        class="btn btn-sidebar {% if request.resolver_match.url_name == 'profile' %}active-sidebar{% endif %}"
+      >
         <i class="fa-solid fa-user me-2"></i>
         Profile
       </a>
