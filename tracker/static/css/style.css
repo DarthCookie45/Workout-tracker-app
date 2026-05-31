@@ -338,11 +338,20 @@ body > .container-fluid {
 }
 
 .calendar-month-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 220px;
+
   border: 1px solid #d1d5db;
   background: #ffffff;
   border-radius: 0.5rem;
-  padding: 0.45rem 1.5rem;
+
+  padding: 0.45rem 1rem;
+
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .calendar-view-btn.active {
