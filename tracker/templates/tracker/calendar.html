@@ -1,60 +1,179 @@
-{% extends "tracker/base.html" %} {% load calendar_extras %} {% block content %}
+{% extends "tracker/base.html" %}
+{% load calendar_extras %}
+
+{% block content %}
 
 <div class="container-fluid py-0">
   <div class="dashboard-layout">
     {% include "tracker/includes/sidebar.html" %}
 
     <main class="dashboard-main">
-      <div class="card bg-white text-dark shadow calendar-card">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="mb-0">{{ month_name }} {{ year }}</h3>
+      <div class="calendar-toolbar mb-3">
+        <div class="calendar-month-controls">
+          <a
+            href="{% if calendar_view == 'week' %}{% url 'calendar' %}?view=week&date={{ previous_week_date }}{% else %}{% url 'calendar' %}?view={{ calendar_view }}&month={{ previous_month }}&year={{ previous_year }}{% endif %}"
+            class="calendar-nav-btn"
+          >
+            <i class="fa-solid fa-chevron-left"></i>
+          </a>
 
-            <a href="{% url 'add_routine' %}" class="btn btn-primary">
-              + Add Workout
-            </a>
-          </div>
+          <span class="calendar-month-label">
+            {% if calendar_view == 'week' %}
+              {{ week_label }}
+            {% else %}
+              {{ month_name }} {{ year }}
+            {% endif %}
+          </span>
 
-          <div class="table-responsive">
-            <table class="table table-bordered calendar-table">
-              <thead>
-                <tr class="text-center">
-                  <th>Mon</th>
-                  <th>Tue</th>
-                  <th>Wed</th>
-                  <th>Thu</th>
-                  <th>Fri</th>
-                  <th>Sat</th>
-                  <th>Sun</th>
-                </tr>
-              </thead>
+          <a
+            href="{% if calendar_view == 'week' %}{% url 'calendar' %}?view=week&date={{ next_week_date }}{% else %}{% url 'calendar' %}?view={{ calendar_view }}&month={{ next_month }}&year={{ next_year }}{% endif %}"
+            class="calendar-nav-btn"
+          >
+            <i class="fa-solid fa-chevron-right"></i>
+          </a>
 
-              <tbody>
-                {% for week in month_calendar %}
-                <tr>
-                  {% for day in week %}
-                  <td
-                    class="calendar-cell {% if day.month != month %}calendar-muted{% endif %}"
-                  >
-                    <div class="calendar-date">{{ day.day }}</div>
+          <a
+            href="{% if calendar_view == 'week' %}{% url 'calendar' %}?view=week&date={{ today_date }}{% else %}{% url 'calendar' %}?view={{ calendar_view }}&month={{ today_month }}&year={{ today_year }}{% endif %}"
+            class="calendar-today-btn"
+          >
+            <i class="fa-solid fa-rotate-right me-1"></i>
+            Today
+          </a>
+        </div>
 
-                    {% for routine in routine_lookup|get_item:day %}
-                    <a
-                      href="{% url 'routine_detail' routine.id %}"
-                      class="calendar-workout"
-                    >
-                      {{ routine.name }}
-                    </a>
-                    {% endfor %}
-                  </td>
-                  {% endfor %}
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+        <div class="calendar-view-buttons">
+          <a
+            href="{% url 'calendar' %}?view=month&month={{ month }}&year={{ year }}"
+            class="calendar-view-btn {% if calendar_view == 'month' %}active{% endif %}"
+          >
+            Month
+          </a>
+
+          <a
+            href="{% url 'calendar' %}?view=week&date={{ today_date }}"
+            class="calendar-view-btn {% if calendar_view == 'week' %}active{% endif %}"
+          >
+            Week
+          </a>
+
+          <a
+            href="{% url 'calendar' %}?view=list&month={{ month }}&year={{ year }}"
+            class="calendar-view-btn {% if calendar_view == 'list' %}active{% endif %}"
+          >
+            List
+          </a>
         </div>
       </div>
+
+      {% if calendar_view == "month" %}
+      <div class="table-responsive">
+        <table class="table table-bordered calendar-table">
+          <thead>
+            <tr class="text-center">
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+              <th>Sat</th>
+              <th>Sun</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for week in month_calendar %}
+            <tr>
+              {% for day in week %}
+              <td class="calendar-cell {% if day.month != month %}calendar-muted{% endif %}">
+                <div class="calendar-date">
+                  <span class="{% if day == today %}calendar-today{% endif %}">
+                    {{ day.day }}
+                  </span>
+                </div>
+
+                {% for routine in routine_lookup|get_item:day %}
+                <a
+                  href="{% url 'routine_detail' routine.id %}"
+                  class="calendar-workout"
+                >
+                  {{ routine.name }}
+                </a>
+                {% endfor %}
+              </td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      {% if calendar_view == "list" %}
+      <div class="card bg-white text-dark shadow-sm">
+        <div class="card-body">
+          <h3 class="mb-4">{{ month_name }} {{ year }}</h3>
+
+          {% if routines %}
+          <div class="list-group">
+            {% for routine in routines %}
+            <a
+              href="{% url 'routine_detail' routine.id %}"
+              class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+            >
+              <div>
+                <strong>{{ routine.workout_date|date:"d M" }}</strong>
+                <span class="ms-3">{{ routine.name }}</span>
+              </div>
+
+              <i class="fa-solid fa-chevron-right text-muted"></i>
+            </a>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="text-muted mb-0">
+            No workouts planned for this month.
+          </p>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if calendar_view == "week" %}
+      <div class="row g-3">
+
+        {% for day in week_days %}
+        <div class="col">
+
+          <div class="card h-100 shadow-sm">
+
+            <div class="card-header text-center">
+              <strong>{{ day|date:"D" }}</strong><br>
+              {{ day|date:"d M" }}
+            </div>
+
+            <div class="card-body">
+
+              {% for routine in routine_lookup|get_item:day %}
+              <a
+                href="{% url 'routine_detail' routine.id %}"
+                class="calendar-workout"
+              >
+                {{ routine.name }}
+              </a>
+              {% empty %}
+              <small class="text-muted">
+                No workout
+              </small>
+              {% endfor %}
+            </div>
+
+          </div>
+
+        </div>
+        {% endfor %}
+
+      </div>
+      {% endif %}
     </main>
   </div>
 </div>

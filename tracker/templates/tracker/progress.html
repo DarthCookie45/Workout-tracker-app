@@ -1,11 +1,11 @@
 {% extends "tracker/base.html" %} {% block content %}
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-0">
   <div class="dashboard-layout">
     {% include "tracker/includes/sidebar.html" %}
 
     <main class="dashboard-main">
-      <div class="row mb-4">
+      <div class="row mb-2">
         <div class="col-md-3 mb-3">
           <div class="card stat-card bg-white text-dark shadow h-100">
             <div class="card-body">
@@ -36,53 +36,85 @@
         <div class="col-md-3 mb-3">
           <div class="card stat-card bg-white text-dark shadow h-100">
             <div class="card-body">
-              <h5>Heaviest Lift</h5>
-              <h2>{{ heaviest_lift }} kg</h2>
+              <h5>Personal Bests</h5>
+              <h2>{{ personal_bests }}</h2>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="card bg-white text-dark shadow">
+      <div class="card bg-white text-dark shadow mt-0">
         <div class="card-body">
-          <h3>Training Summary</h3>
+          <h3 class="mb-3">Exercise Progress Tracker</h3>
 
-          <p>
-            <strong>Total volume:</strong>
-            {{ total_volume }} kg
+          {% if exercise_names %}
+          <form method="GET" class="mb-2">
+            <div class="row g-2 align-items-end">
+              <div class="col-md-6">
+                <label for="exercise" class="form-label">
+                  Select exercise
+                </label>
+
+                <select
+                  name="exercise"
+                  id="exercise"
+                  class="form-select"
+                  onchange="this.form.submit()"
+                >
+                  {% for exercise_name in exercise_names %}
+                  <option
+                    value="{{ exercise_name }}"
+                    {% if selected_exercise == exercise_name %}selected{% endif %}
+                  >
+                    {{ exercise_name }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </form>
+
+          <div class="alert alert-info">
+            <strong>Personal best:</strong>
+            {{ pb_weight }} kg
+
+            {% if pb_record %}
+              achieved on {{ pb_record.routine.workout_date }}
+            {% endif %}
+          </div>
+
+          <canvas id="progressChart" height="90"></canvas>
+
+          {% else %}
+          <p class="text-muted">
+            Add exercises to your routines to start tracking personal bests.
           </p>
-
-          <p class="text-muted mb-0">
-            Your total volume is calculated from your saved routine exercises.
-          </p>
-        </div>
-      </div>
-
-      <div class="card bg-white text-dark shadow mt-4">
-        <div class="card-body">
-          <h3>Volume by Routine</h3>
-
-          <canvas id="progressChart" height="120"></canvas>
+          {% endif %}
         </div>
       </div>
     </main>
   </div>
 </div>
 
+{% if exercise_names %}
 <script>
-  const progressLabels = {{ volume_labels|safe }};
-  const progressData = {{ volume_data|safe }};
+  const chartLabels = {{ chart_labels|safe }};
+  const chartData = {{ chart_data|safe }};
 
-  const progressCtx = document.getElementById('progressChart');
+  const ctx = document.getElementById('progressChart');
 
-  new Chart(progressCtx, {
-    type: 'bar',
+  new Chart(ctx, {
+    type: 'line',
     data: {
-      labels: progressLabels,
+      labels: chartLabels,
       datasets: [{
-        label: 'Routine Volume',
-        data: progressData,
-        borderWidth: 1
+        label: '{{ selected_exercise }} weight',
+        data: chartData,
+        tension: 0.35,
+        fill: false,
+        borderWidth: 3,
+        pointRadius: 5,
+        pointHoverRadius: 7
       }]
     },
     options: {
@@ -95,5 +127,6 @@
     }
   });
 </script>
+{% endif %}
 
 {% endblock %}

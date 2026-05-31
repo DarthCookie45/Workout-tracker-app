@@ -10,102 +10,72 @@ from django.contrib import messages
 import requests
 from django.conf import settings
 import calendar as calendar_module
-from datetime import date
+from datetime import date, datetime, timedelta
 
 # Create your views here.
 # Homepage / Dashboard
 def home(request):
     if request.user.is_authenticated:
-        workouts = Workout.objects.filter(
+        routines = WorkoutRoutine.objects.filter(
             user=request.user
         ).order_by('-workout_date')
+
+        exercises = Exercise.objects.filter(
+            routine__user=request.user
+        )
+
     else:
-        workouts = Workout.objects.none()
+        routines = WorkoutRoutine.objects.none()
+        exercises = Exercise.objects.none()
 
-    search_query = request.GET.get('search', '')
-    filter_option = request.GET.get('filter', '')
-    muscle_group = request.GET.get('muscle_group', '')
-
-    # Search filtering
-    if search_query:
-        workouts = workouts.filter(
-            workout_name__icontains=search_query
-        )
-
-    # Muscle group filtering
-    if muscle_group:
-        workouts = workouts.filter(
-            muscle_group=muscle_group
-        )
-
-    # Workout ordering filters
-    if filter_option == 'oldest':
-        workouts = workouts.order_by('workout_date')
-
-    elif filter_option == 'newest':
-        workouts = workouts.order_by('-workout_date')
-
-    elif filter_option == 'highest_volume':
-        workouts = sorted(
-            workouts,
-            key=lambda workout: (
-                float(workout.weight) * workout.sets * workout.reps
-            ),
-            reverse=True
-        )
-
-    # Dashboard statistics
-    total_workouts = len(workouts)
+    total_workouts = routines.count()
+    total_exercises = exercises.count()
 
     total_sets = sum(
-        workout.sets for workout in workouts
+        exercise.sets for exercise in exercises
     )
 
+    active_days = routines.values(
+        'workout_date'
+    ).distinct().count()
+
     total_weight = sum(
-        float(workout.weight) * workout.sets * workout.reps
-        for workout in workouts
+        float(exercise.weight) * exercise.sets
+        for exercise in exercises
     )
 
     heaviest_lift = max(
-    [float(workout.weight) for workout in workouts],
-    default=0
-)
+        [float(exercise.weight) for exercise in exercises],
+        default=0
+    )
 
-    recent_workouts = workouts[:5]
+    recent_workouts = routines[:5]
 
-    muscle_group_counts = defaultdict(int)
-
-    for workout in workouts:
-        muscle_group_counts[workout.muscle_group] += 1
-
-    # Workout volume chart data grouped by muscle group
     volume_data = defaultdict(float)
 
-    for workout in workouts:
-        volume = (
-            float(workout.weight)
-            * workout.reps
-            * workout.sets
+    for routine in routines:
+        routine_volume = sum(
+            float(exercise.weight) * exercise.sets
+            for exercise in routine.exercises.all()
         )
 
-        volume_data[workout.muscle_group] += volume
+        volume_data[routine.name] += routine_volume
 
     chart_labels = json.dumps(list(volume_data.keys()))
     chart_data = json.dumps(list(volume_data.values()))
 
     context = {
-        'workouts': workouts,
+        'routines': routines,
+        'exercises': exercises,
         'total_workouts': total_workouts,
+        'total_exercises': total_exercises,
         'total_sets': total_sets,
+        'active_days': active_days,
         'total_weight': total_weight,
+        'heaviest_lift': heaviest_lift,
         'recent_workouts': recent_workouts,
-        'search_query': search_query,
-        'filter_option': filter_option,
-        'muscle_group': muscle_group,
         'chart_labels': chart_labels,
         'chart_data': chart_data,
-        'heaviest_lift': heaviest_lift,
-        'muscle_group_counts': dict(muscle_group_counts),
     }
 
     return render(request, 'tracker/home.html', context)
@@ -131,45 +101,73 @@ def workouts(request):
 @login_required
 def progress(request):
     routines = WorkoutRoutine.objects.filter(user=request.user)
-    exercises = Exercise.objects.filter(routine__user=request.user)
+    exercises = Exercise.objects.filter(
+        routine__user=request.user
+    ).order_by('routine__workout_date')
 
-    total_routines = routines.count()
-    total_exercises = exercises.count()
-
-    total_sets = sum(exercise.sets for exercise in exercises)
-
-    total_volume = sum(
-        float(exercise.weight) * exercise.sets
-        for exercise in exercises
+    exercise_names = (
+        exercises
+        .values_list('name', flat=True)
+        .distinct()
+        .order_by('name')
     )
 
-    heaviest_lift = max(
-        [float(exercise.weight) for exercise in exercises],
+    selected_exercise = request.GET.get('exercise', '')
+
+    if not selected_exercise and exercise_names:
+        selected_exercise = exercise_names[0]
+
+    selected_exercises = exercises.filter(
+        name=selected_exercise
+    )
+
+    pb_weight = max(
+        [float(exercise.weight) for exercise in selected_exercises],
         default=0
     )
 
-    volume_labels = []
-    volume_data = []
+    pb_record = None
 
-    for routine in routines:
-        routine_volume = sum(
-            float(exercise.weight) * exercise.sets
-            for exercise in routine.exercises.all()
+    for exercise in selected_exercises:
+        if float(exercise.weight) == pb_weight:
+            pb_record = exercise
+            break
+
+    chart_labels = []
+    chart_data = []
+
+    for exercise in selected_exercises:
+        chart_labels.append(
+            exercise.routine.workout_date.strftime("%d %b")
         )
 
-    volume_labels.append(routine.name)
-    volume_data.append(routine_volume)
+        chart_data.append(
+            float(exercise.weight)
+        )
+
+    total_routines = routines.count()
+    total_exercises = exercises.count()
+    total_sets = sum(exercise.sets for exercise in exercises)
+
+    personal_bests = 0
+
+    for name in exercise_names:
+        name_exercises = exercises.filter(name=name)
+
+        if name_exercises.exists():
+            personal_bests += 1
 
     context = {
         'total_routines': total_routines,
         'total_exercises': total_exercises,
         'total_sets': total_sets,
-        'total_volume': total_volume,
-        'heaviest_lift': heaviest_lift,
-        'volume_labels': json.dumps(volume_labels),
-        'volume_data': json.dumps(volume_data),
-        'volume_labels': json.dumps(volume_labels),
-        'volume_data': json.dumps(volume_data),
+        'personal_bests': personal_bests,
+        'exercise_names': exercise_names,
+        'selected_exercise': selected_exercise,
+        'pb_weight': pb_weight,
+        'pb_record': pb_record,
+        'chart_labels': json.dumps(chart_labels),
+        'chart_data': json.dumps(chart_data),
     }
 
     return render(
@@ -186,11 +184,57 @@ def calendar(request):
     year = int(request.GET.get('year', today.year))
     month = int(request.GET.get('month', today.month))
 
-    routines = WorkoutRoutine.objects.filter(
+    previous_month = month - 1
+    previous_year = year
+
+    if previous_month == 0:
+        previous_month = 12
+        previous_year -= 1
+
+    next_month = month + 1
+    next_year = year
+
+    if next_month == 13:
+        next_month = 1
+        next_year += 1
+
+    calendar_view = request.GET.get('view', 'month')
+
+    week_date = request.GET.get("date")
+
+    if week_date:
+        selected_date = datetime.strptime(
+            week_date,
+            "%Y-%m-%d"
+        ).date()
+    else:
+        selected_date = date(year, month, 1)
+
+    week_start = selected_date - timedelta(days=selected_date.weekday())
+
+    week_days = [
+        week_start + timedelta(days=i)
+        for i in range(7)
+    ]
+
+    week_label = f"{week_start.strftime('%d %b')} - {week_days[-1].strftime('%d %b %Y')}"
+
+    previous_week = week_start - timedelta(days=7)
+    next_week = week_start + timedelta(days=7)
+
+    if calendar_view == 'week':
+        routines = WorkoutRoutine.objects.filter(
+        user=request.user,
+        workout_date__gte=week_start,
+        workout_date__lte=week_days[-1]
+        ).order_by('workout_date')
+
+    else:
+        routines = WorkoutRoutine.objects.filter(
         user=request.user,
         workout_date__year=year,
         workout_date__month=month
-    ).order_by('workout_date')
+        ).order_by('workout_date')
 
     month_calendar = calendar_module.Calendar(firstweekday=0).monthdatescalendar(
         year,
@@ -212,6 +256,19 @@ def calendar(request):
         'year': year,
         'month': month,
         'today': today,
+        'previous_month': previous_month,
+        'previous_year': previous_year,
+        'next_month': next_month,
+        'next_year': next_year,
+        'today_month': today.month,
+        'today_year': today.year,
+        'calendar_view': calendar_view,
+        'routines': routines,
+        'week_days': week_days,
+        'previous_week_date': previous_week.strftime("%Y-%m-%d"),
+        'next_week_date': next_week.strftime("%Y-%m-%d"),
+        'week_label': week_label,
+        'today_date': today.strftime("%Y-%m-%d"),
     }
 
     return render(

@@ -279,13 +279,17 @@ body > .container-fluid {
 }
 
 .calendar-muted {
-  color: #9ca3af;
-  background: #f9fafb;
+  color: #cbd5e1 !important;
+  background: #f8fafc !important;
 }
 
 .calendar-date {
   font-weight: 600;
   margin-bottom: 0.5rem;
+}
+
+.calendar-muted .calendar-date {
+  color: #cbd5e1;
 }
 
 .calendar-workout {
@@ -305,6 +309,82 @@ body > .container-fluid {
 
 .calendar-card {
   width: 100%;
+}
+
+.calendar-month-controls,
+.calendar-view-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.calendar-nav-btn,
+.calendar-today-btn,
+.calendar-view-btn {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.calendar-nav-btn:hover,
+.calendar-today-btn:hover,
+.calendar-view-btn:hover {
+    background: #f3f4f6;
+    transition: 0.2s ease;
+}
+
+.calendar-month-label {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  padding: 0.45rem 1.5rem;
+  font-weight: 600;
+}
+
+.calendar-view-btn.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: white;
+}
+
+.calendar-today {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+
+  background-color: #2563eb;
+  color: white;
+
+  font-weight: 700;
+}
+
+.calendar-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.calendar-month-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.calendar-view-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
 }
 
 /* Media Query */
@@ -331,6 +411,18 @@ body > .container-fluid {
   .dashboard-main {
     margin-left: 0;
     padding-left: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .calendar-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .calendar-month-controls,
+  .calendar-view-buttons {
+    flex-wrap: wrap;
   }
 }
 
