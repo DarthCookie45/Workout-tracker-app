@@ -396,6 +396,43 @@ body > .container-fluid {
   margin-left: auto;
 }
 
+/* Profile */
+.profile-avatar-large {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  color: #111827;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2.5rem;
+}
+
+.profile-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 1rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.profile-stat-row:last-child {
+  border-bottom: none;
+}
+
+#id_old_password,
+#id_new_password1,
+#id_new_password2 {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  padding: 0.6rem;
+}
+
 /* Media Query */
 @media screen and (max-width: 991px) {
   .navbar {

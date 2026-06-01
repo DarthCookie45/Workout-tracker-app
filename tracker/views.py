@@ -5,12 +5,14 @@ from collections import defaultdict
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
+from django.contrib.auth import login, update_session_auth_hash
 from django.contrib import messages
 import requests
 from django.conf import settings
 import calendar as calendar_module
 from datetime import date, datetime, timedelta
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
 # Homepage / Dashboard
@@ -280,9 +282,75 @@ def calendar(request):
 # profile view
 @login_required
 def profile(request):
+    routines = WorkoutRoutine.objects.filter(
+        user=request.user
+    )
+
+    exercises = Exercise.objects.filter(
+        routine__user=request.user
+    )
+
+    total_routines = routines.count()
+    total_exercises = exercises.count()
+
+    total_sets = sum(
+        exercise.sets for exercise in exercises
+    )
+
+    total_volume = sum(
+        float(exercise.weight) * exercise.sets
+        for exercise in exercises
+    )
+
+    personal_bests = (
+        exercises
+        .values_list('name', flat=True)
+        .distinct()
+        .count()
+    )
+
+    password_form = PasswordChangeForm(user=request.user)
+
+    if request.method == "POST":
+        form_type = request.POST.get("form_type")
+
+        if form_type == "email":
+            email = request.POST.get("email", "").strip()
+            request.user.email = email
+            request.user.save()
+            messages.success(request, "Email address updated successfully.")
+            return redirect("profile")
+
+        if form_type == "password":
+            password_form = PasswordChangeForm(
+                user=request.user,
+                data=request.POST
+            )
+
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, "Password changed successfully.")
+                return redirect("profile")
+            else:
+                messages.warning(
+                    request,
+                    "Password could not be changed. Please check the errors below."
+                )
+
+    context = {
+        'total_routines': total_routines,
+        'total_exercises': total_exercises,
+        'total_sets': total_sets,
+        'total_volume': total_volume,
+        'personal_bests': personal_bests,
+        'password_form': password_form,
+    }
+
     return render(
         request,
-        'tracker/profile.html'
+        'tracker/profile.html',
+        context
     )
 
 # View workout details
