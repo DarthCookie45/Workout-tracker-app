@@ -128,3 +128,9 @@
 | T124    | Sidebar Navigation          | Navigate between pages using sidebar                         | Correct pages load                                                   | Pass   | Sidebar links remain functional                                                                                     |
 | T125    | Back Button Navigation      | Click "Back to Routine"                                      | Returns to routine detail page                                       | Pass   | Navigation flow working correctly                                                                                   |
 | T126    | Search Form Persistence     | Perform search/filter                                        | Search values remain selected after reload                           | Pass   | UX improvement for filtering                                                                                        |
+| T127 | Calendar Month View | Open Calendar page | Monthly calendar grid displays | Pass | Routine dates appear in correct cells |
+| T128 | Calendar Week View | Click Week | Current week displays with routines | Pass | Week view uses selected week dates |
+| T129 | Calendar List View | Click List | Routines display in date order | Pass | List view shows planned workouts for the month |
+| T130 | Calendar Navigation | Use previous/next arrows | Calendar changes by month or week | Pass | Week view moves week-by-week |
+| T131 | Today Button | Click Today | Returns to current month/week | Pass | Today uses correct current date |
+| T132 | Calendar Routine Link | Click routine | Routine detail page opens | Pass | Linked by routine ID |
