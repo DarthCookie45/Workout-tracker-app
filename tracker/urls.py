@@ -79,4 +79,10 @@ urlpatterns = [
     views.exercise_library,
     name='exercise_library'
     ),
+
+    path(
+    'workouts/<int:routine_id>/duplicate/',
+    views.duplicate_routine,
+    name='duplicate_routine'
+),
 ]

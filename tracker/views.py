@@ -656,3 +656,37 @@ def exercise_library(request, routine_id):
         'tracker/exercise_library.html',
         context
     )
+
+@login_required
+def duplicate_routine(request, routine_id):
+    routine = get_object_or_404(
+        WorkoutRoutine,
+        id=routine_id,
+        user=request.user
+    )
+
+    if request.method == "POST":
+        new_routine = WorkoutRoutine.objects.create(
+            user=request.user,
+            name=f"{routine.name} Copy",
+            workout_date=routine.workout_date,
+            notes=routine.notes
+        )
+
+        for exercise in routine.exercises.all():
+            Exercise.objects.create(
+                routine=new_routine,
+                name=exercise.name,
+                sets=exercise.sets,
+                reps=exercise.reps,
+                weight=exercise.weight
+            )
+
+        messages.success(request, "Workout routine duplicated successfully.")
+        return redirect('edit_routine', routine_id=new_routine.id)
+
+    return render(
+        request,
+        'tracker/duplicate_routine.html',
+        {'routine': routine}
+    )

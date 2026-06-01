@@ -11,9 +11,18 @@
           <p class="text-muted">{{ routine.workout_date }}</p>
         </div>
 
-        <a href="{% url 'add_exercise' routine.id %}" class="btn btn-primary">
-          + Add Exercise
-        </a>
+        <div class="d-flex justify-content-end gap-2 mb-4">
+          <a
+            href="{% url 'duplicate_routine' routine.id %}"
+            class="btn btn-outline-primary"
+          >
+            <i class="fa-solid fa-copy me-2"></i>
+            Duplicate Routine
+          </a>
+          <a href="{% url 'add_exercise' routine.id %}" class="btn btn-primary">
+            + Add Exercise
+          </a>
+        </div>
       </div>
 
       {% if exercises %}

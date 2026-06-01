@@ -1,0 +1,54 @@
+{% extends "tracker/base.html" %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+  <div class="dashboard-layout">
+    {% include "tracker/includes/sidebar.html" %}
+
+    <main class="dashboard-main">
+      <div class="card bg-white text-dark shadow">
+        <div class="card-body">
+          <div class="text-start">
+            <a
+              href="{% url 'routine_detail' routine.id %}"
+              class="btn btn-outline-secondary mb-3 w-auto"
+            >
+              <i class="fa-solid fa-arrow-left me-2"></i>
+              Back to Routine
+            </a>
+          </div>
+
+          <h2 class="fw-bold mb-3">Duplicate Routine</h2>
+
+          <p>
+            Create a copy of
+            <strong>{{ routine.name }}</strong>
+            with all of its exercises?
+          </p>
+
+          <p class="text-muted">
+            You can edit the copied routine name and workout date afterwards.
+          </p>
+
+          <form method="POST">
+            {% csrf_token %}
+
+            <button type="submit" class="btn btn-primary">
+              Duplicate Routine
+            </button>
+
+            <a
+              href="{% url 'routine_detail' routine.id %}"
+              class="btn btn-outline-secondary"
+            >
+              Cancel
+            </a>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+{% endblock %}
