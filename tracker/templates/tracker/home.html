@@ -52,15 +52,6 @@
             </div>
           </div>
         </div>
-        
-        <div class="col-md-3 mb-3">
-          <div class="card stat-card bg-white text-dark shadow h-100">
-            <div class="card-body">
-              <h5>Total Sets</h5>
-              <h2>{{ total_sets }}</h2>
-            </div>
-          </div>
-        </div>
 
         <div class="col-md-3 mb-3">
           <div class="card stat-card bg-white text-dark shadow h-100">
@@ -70,7 +61,31 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md-3 mb-3">
+          <div class="card stat-card bg-white text-dark shadow h-100">
+            <div class="card-body">
+              <h5>Next Workout</h5>
+            
+              {% if next_workout %}
+              <h2 class="fs-4 mb-1">
+                {{ next_workout.name }}
+              </h2>
+
+              <p class="text-muted mb-0">
+                {{ next_workout.workout_date|date:"d M Y" }}
+              </p>
+              {% else %}
+                     <h2 class="fs-5 mb-0">
+                No upcoming workout
+              </h2>
+              {% endif %}
+            </div>
+          </div>
+        </div>
       </div>
+
+      
 
       <!-- Recent + Chart -->
       <div class="row mb-4">

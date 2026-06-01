@@ -26,9 +26,15 @@ def home(request):
             routine__user=request.user
         )
 
+        next_workout = WorkoutRoutine.objects.filter(
+            user=request.user,
+            workout_date__gte=date.today()
+        ).order_by('workout_date').first()
+
     else:
         routines = WorkoutRoutine.objects.none()
         exercises = Exercise.objects.none()
+        next_workout = None
 
     total_workouts = routines.count()
     total_exercises = exercises.count()
@@ -78,6 +84,7 @@ def home(request):
         'recent_workouts': recent_workouts,
         'chart_labels': chart_labels,
         'chart_data': chart_data,
+        "next_workout": next_workout,
     }
 
     return render(request, 'tracker/home.html', context)
