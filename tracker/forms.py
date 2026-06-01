@@ -2,6 +2,8 @@ from django import forms
 from .models import Workout
 from .models import WorkoutRoutine
 from .models import Exercise
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class WorkoutForm(forms.ModelForm):
     class Meta:
@@ -100,3 +102,15 @@ class ExerciseForm(forms.ModelForm):
                 attrs={'class': 'form-control'}
             ),
         }
+
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'password1',
+            'password2',
+        ]

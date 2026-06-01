@@ -4,7 +4,7 @@ from .forms import WorkoutForm, WorkoutRoutineForm, ExerciseForm
 from collections import defaultdict
 import json
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
+from .forms import CustomUserCreationForm
 from django.contrib.auth import login, update_session_auth_hash
 from django.contrib import messages
 import requests
@@ -457,7 +457,7 @@ def delete_workout(request, workout_id):
 # User registration
 def register(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
 
         if form.is_valid():
             user = form.save()
@@ -465,7 +465,7 @@ def register(request):
             return redirect('home')
 
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
 
     return render(
         request,
