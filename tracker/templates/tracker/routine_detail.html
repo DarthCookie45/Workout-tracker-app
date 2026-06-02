@@ -49,7 +49,14 @@
                 {% for exercise in exercises %}
 
                 <tr>
-                  <td>{{ exercise.name }}</td>
+                  <td>{{ exercise.name }}
+                    {% if exercise.id in personal_best_ids %}
+                    <span class="badge bg-warning text-dark ms-2">
+                      <i class="fa-solid fa-trophy me-1"></i>
+                      New PB
+                    </span>
+                    {% endif %}
+                  </td>
                   <td>{{ exercise.sets }}</td>
                   <td>{{ exercise.reps }}</td>
                   <td>{{ exercise.weight }} kg</td>

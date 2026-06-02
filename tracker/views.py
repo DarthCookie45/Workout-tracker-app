@@ -524,9 +524,21 @@ def routine_detail(request, routine_id):
 
     exercises = routine.exercises.all()
 
+    personal_best_ids = []
+
+    for exercise in exercises:
+        best_weight = Exercise.objects.filter(
+            routine__user=request.user,
+            name__iexact=exercise.name
+        ).order_by('-weight').first()
+
+        if best_weight and exercise.weight == best_weight.weight:
+            personal_best_ids.append(exercise.id)
+
     context = {
         'routine': routine,
         'exercises': exercises,
+        'personal_best_ids': personal_best_ids,
     }
 
     return render(
