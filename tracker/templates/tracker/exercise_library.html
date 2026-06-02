@@ -27,6 +27,14 @@
           </p>
 
           <form method="GET" class="mb-4">
+            {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}" />
+            {% endif %}
+
+            {% if request.GET.exercise_id %}
+            <input type="hidden" name="exercise_id" value="{{ request.GET.exercise_id }}" />
+            {% endif %}
+
             <div class="row g-2">
               <div class="col-md-4">
                 <input
@@ -46,7 +54,7 @@
                     {%
                     if
                     muscle=""
-                    ="biceps"
+                    =="biceps"
                     %}selected{%
                     endif
                     %}
@@ -58,7 +66,7 @@
                     {%
                     if
                     muscle=""
-                    ="triceps"
+                    =="triceps"
                     %}selected{%
                     endif
                     %}
@@ -70,7 +78,7 @@
                     {%
                     if
                     muscle=""
-                    ="chest"
+                    =="chest"
                     %}selected{%
                     endif
                     %}
@@ -82,7 +90,7 @@
                     {%
                     if
                     muscle=""
-                    ="lats"
+                    =="lats"
                     %}selected{%
                     endif
                     %}
@@ -94,7 +102,7 @@
                     {%
                     if
                     muscle=""
-                    ="lower_back"
+                    =="lower_back"
                     %}selected{%
                     endif
                     %}
@@ -106,7 +114,7 @@
                     {%
                     if
                     muscle=""
-                    ="quadriceps"
+                    =="quadriceps"
                     %}selected{%
                     endif
                     %}
@@ -118,7 +126,7 @@
                     {%
                     if
                     muscle=""
-                    ="hamstrings"
+                    =="hamstrings"
                     %}selected{%
                     endif
                     %}
@@ -130,7 +138,7 @@
                     {%
                     if
                     muscle=""
-                    ="glutes"
+                    =="glutes"
                     %}selected{%
                     endif
                     %}
@@ -142,7 +150,7 @@
                     {%
                     if
                     muscle=""
-                    ="shoulders"
+                    =="shoulders"
                     %}selected{%
                     endif
                     %}
@@ -154,7 +162,7 @@
                     {%
                     if
                     muscle=""
-                    ="abdominals"
+                    =="abdominals"
                     %}selected{%
                     endif
                     %}
@@ -276,12 +284,21 @@
                   </button>
                   {% endif %}
 
+                  {% if request.GET.next == "edit" %}
                   <a
-                    href="{% url 'add_exercise' routine.id %}?name={{ exercise.name }}"
-                    class="btn btn-success w-100"
+                    href="{% url 'edit_exercise' request.GET.exercise_id %}?name={{ exercise.name|urlencode }}"
+                    class="btn btn-success"
                   >
                     Use Exercise
                   </a>
+                  {% else %}
+                  <a
+                    href="{% url 'add_exercise' routine.id %}?name={{ exercise.name|urlencode }}"
+                    class="btn btn-success"
+                  >
+                    Use Exercise
+                  </a>
+                  {% endif %}
                 </div>
               </div>
             </div>

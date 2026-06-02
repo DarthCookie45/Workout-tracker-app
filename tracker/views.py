@@ -582,6 +582,11 @@ def edit_exercise(request, exercise_id):
             return redirect('routine_detail', routine_id=routine.id)
 
     else:
+        selected_name = request.GET.get('name')
+
+        if selected_name:
+            exercise.name = selected_name
+
         form = ExerciseForm(instance=exercise)
 
     return render(
@@ -589,7 +594,8 @@ def edit_exercise(request, exercise_id):
         'tracker/edit_exercise.html',
         {
             'form': form,
-            'routine': routine
+            'routine': routine,
+            'exercise': exercise,
         }
     )
 
