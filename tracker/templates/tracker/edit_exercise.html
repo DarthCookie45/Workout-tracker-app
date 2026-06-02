@@ -28,9 +28,25 @@
           </a>
 
           <form method="POST">
-            {% csrf_token %} {{ form.as_p }}
+            {% csrf_token %}
 
-            <button type="submit" class="btn btn-success">Save Changes</button>
+            {{ form.as_p }}
+
+            {% if bodyweight %}
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm mb-3"
+              onclick="useBodyweight()"
+            >
+              Use Bodyweight ({{ bodyweight }}kg)
+                     </button>
+            {% endif %}
+                 
+            <br>
+                 
+            <button type="submit" class="btn btn-success">
+              Save Changes
+            </button>
 
             <a
               href="{% url 'routine_detail' routine.id %}"
@@ -44,5 +60,11 @@
     </main>
   </div>
 </div>
+
+<script>
+function useBodyweight() {
+  document.getElementById("id_weight").value = "{{ bodyweight }}";
+}
+</script>
 
 {% endblock %}

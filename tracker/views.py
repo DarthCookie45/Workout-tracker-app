@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Workout, WorkoutRoutine, Exercise
+from .models import Workout, WorkoutRoutine, Exercise, Profile
 from .forms import WorkoutForm, WorkoutRoutineForm, ExerciseForm
 from collections import defaultdict
 import json
@@ -297,6 +297,10 @@ def profile(request):
         routine__user=request.user
     )
 
+    profile, created = Profile.objects.get_or_create(
+        user=request.user
+    )
+
     total_routines = routines.count()
     total_exercises = exercises.count()
 
@@ -321,11 +325,17 @@ def profile(request):
     if request.method == "POST":
         form_type = request.POST.get("form_type")
 
-        if form_type == "email":
+        if form_type == "profile":
             email = request.POST.get("email", "").strip()
+            bodyweight = request.POST.get("bodyweight", "").strip()
+
             request.user.email = email
             request.user.save()
-            messages.success(request, "Email address updated successfully.")
+
+            profile.bodyweight = bodyweight or None
+            profile.save()
+
+            messages.success(request, "Profile updated successfully.")
             return redirect("profile")
 
         if form_type == "password":
@@ -352,6 +362,7 @@ def profile(request):
         'total_volume': total_volume,
         'personal_bests': personal_bests,
         'password_form': password_form,
+        'profile': profile,
     }
 
     return render(
@@ -550,12 +561,20 @@ def add_exercise(request, routine_id):
 
         form = ExerciseForm(initial=initial_data)
 
+    profile = getattr(request.user, "profile", None)
+
+    bodyweight = ""
+
+    if profile and profile.bodyweight:
+        bodyweight = profile.bodyweight
+
     return render(
         request,
         'tracker/add_exercise.html',
         {
             'form': form,
-            'routine': routine
+            'routine': routine,
+            'bodyweight': bodyweight,
         }
     )
 
@@ -588,6 +607,13 @@ def edit_exercise(request, exercise_id):
             exercise.name = selected_name
 
         form = ExerciseForm(instance=exercise)
+    
+    profile = getattr(request.user, "profile", None)
+
+    bodyweight = ""
+
+    if profile and profile.bodyweight:
+        bodyweight = profile.bodyweight
 
     return render(
         request,
@@ -596,6 +622,7 @@ def edit_exercise(request, exercise_id):
             'form': form,
             'routine': routine,
             'exercise': exercise,
+            'bodyweight': bodyweight,
         }
     )
 

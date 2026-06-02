@@ -43,7 +43,7 @@
               <form method="POST" class="mt-4">
                 {% csrf_token %}
 
-                <input type="hidden" name="form_type" value="email" />
+                <input type="hidden" name="form_type" value="profile" />
 
                 <div class="mb-3">
                   <label class="form-label fw-bold">
@@ -56,11 +56,27 @@
                     class="form-control"
                     value="{{ user.email }}"
                     placeholder="Add your email address"
+                    autofocus
                   />
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">
+                      Bodyweight (kg)
+                    </label>
+                  
+                    <input
+                      type="number"
+                      step="0.01"
+                      name="bodyweight"
+                      class="form-control"
+                      value="{{ profile.bodyweight }}"
+                      placeholder="Enter your bodyweight"
+                    />
+                  </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">
-                  Update Email
+                  Update Profile
                 </button>
               </form>
             </div>

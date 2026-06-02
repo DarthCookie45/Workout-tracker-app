@@ -6,3 +6,5 @@ admin.site.register(Workout)
 admin.site.register(WorkoutRoutine)
 admin.site.register(Exercise)
 admin.site.register(WorkoutSchedule)
+from .models import Profile
+admin.site.register(Profile)
