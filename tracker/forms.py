@@ -103,6 +103,14 @@ class ExerciseForm(forms.ModelForm):
             ),
         }
 
+    def clean_name(self):
+        name = self.cleaned_data.get("name")
+
+        if name:
+            return name.strip().title()
+
+        return name
+
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
