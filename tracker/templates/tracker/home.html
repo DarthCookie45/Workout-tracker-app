@@ -77,7 +77,7 @@
               </p>
               {% else %}
                      <h2 class="fs-5 mb-0">
-                No upcoming workout
+                No upcoming workouts scheduled
               </h2>
               {% endif %}
             </div>
@@ -122,14 +122,21 @@
             <div class="card-body">
               <h3 class="mb-3">Progress Overview</h3>
 
-              <canvas id="workoutChart" height="120"></canvas>
+              {% if chart_data != "[]" %}
+                <canvas id="workoutChart" height="120"></canvas>
+              {% else %}
+                <p class="text-muted">
+                  No workout data available yet.
+                </p>
+              {% endif %}
             </div>
           </div>
         </div>
       </div>
     </main>
   </div>
-
+  
+  {% if chart_data != "[]" %}
   <script>
 
     const chartLabels = {{ chart_labels|safe }};
@@ -167,6 +174,7 @@
 
     });
   </script>
+  {% endif %}
 
   {% endif %}
 </div>

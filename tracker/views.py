@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Workout, WorkoutRoutine, Exercise, Profile
 from .forms import WorkoutForm, WorkoutRoutineForm, ExerciseForm
-from collections import defaultdict
+from collections import defaultdict, Counter
 import json
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
@@ -313,6 +313,17 @@ def profile(request):
         for exercise in exercises
     )
 
+    exercise_names = [
+        exercise.name for exercise in exercises
+    ]
+
+    favourite_exercise = "No exercises yet"
+
+    if exercise_names:
+        favourite_exercise = Counter(
+            exercise_names
+        ).most_common(1)[0][0]
+
     personal_bests = (
         exercises
         .values_list('name', flat=True)
@@ -363,6 +374,7 @@ def profile(request):
         'personal_bests': personal_bests,
         'password_form': password_form,
         'profile': profile,
+        'favourite_exercise': favourite_exercise,
     }
 
     return render(

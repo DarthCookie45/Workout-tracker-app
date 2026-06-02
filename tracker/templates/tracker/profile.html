@@ -104,13 +104,18 @@
               </div>
 
               <div class="profile-stat-row">
-                <span>Total volume</span>
-                <strong>{{ total_volume }} kg</strong>
+                <span>Total Weight Lifted</span>
+                <strong>{{ total_volume|floatformat:2 }} kg</strong>
               </div>
 
               <div class="profile-stat-row">
-                <span>Personal bests tracked</span>
+                <span>Exercises tracked</span>
                 <strong>{{ personal_bests }}</strong>
+              </div>
+
+              <div class="profile-stat-row">
+                <span>Favourite exercise</span>
+                <strong>{{ favourite_exercise }}</strong>
               </div>
             </div>
           </div>
