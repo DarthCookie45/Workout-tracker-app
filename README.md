@@ -134,3 +134,23 @@
 | T130 | Calendar Navigation | Use previous/next arrows | Calendar changes by month or week | Pass | Week view moves week-by-week |
 | T131 | Today Button | Click Today | Returns to current month/week | Pass | Today uses correct current date |
 | T132 | Calendar Routine Link | Click routine | Routine detail page opens | Pass | Linked by routine ID |
+| T133 | Duplicate Routine | Click Duplicate on routine | New routine created with copied exercises | Pass | Exercises copied successfully |
+| T134 | Colour-Coded Workouts | Assign colour to routine | Workout displays selected colour on calendar | Pass | Colours persist after save |
+| T135 | Next Workout Dashboard Card | View dashboard with future workout | Next workout displayed correctly | Pass | Nearest future workout shown |
+| T136 | Exercise Library Search | Search exercise library | Matching exercises returned | Pass | Filters by exercise name |
+| T137 | Exercise Library Muscle Filter | Select muscle group | Filtered exercises displayed | Pass | Correct muscle group returned |
+| T138 | Add Exercise From Library | Select exercise from library | Exercise added to workout | Pass | Exercise populated correctly |
+| T139 | Edit Exercise From Library | Edit exercise and choose library exercise | Existing exercise updated | Pass | No duplicate exercise created |
+| T140 | Exercise Name Normalisation | Save 'push ups' and 'PUSH UPS' | Stored as 'Push Ups' | Pass | Consistent naming enforced |
+| T141 | Profile Bodyweight Save | Update bodyweight in profile | Bodyweight saved successfully | Pass | Value persists after refresh |
+| T142 | Use Bodyweight Button (Add) | Click Use Bodyweight | Weight field populated | Pass | User can still edit weight manually |
+| T143 | Use Bodyweight Button (Edit) | Click Use Bodyweight | Weight field populated | Pass | Existing exercise updated correctly |
+| T144 | Favourite Exercise Statistic | View profile statistics | Most used exercise displayed | Pass | Based on exercise frequency |
+| T145 | Total Weight Lifted Statistic | View profile statistics | Total weight displayed | Pass | Rounded to 2 decimal places |
+| T146 | Personal Best Badge | View exercise matching highest weight | PB badge displayed | Pass | Highest recorded weight identified |
+| T147 | Empty Dashboard State | User with no workouts | Helpful empty-state messages displayed | Pass | No errors shown |
+| T148 | Empty Progress State | User with no exercises | Empty-state message displayed | Pass | Chart hidden correctly |
+| T149 | Empty Workout Detail State | Workout with no exercises | Add Exercise prompt displayed | Pass | User guidance provided |
+| T150 | Change Password Success | Enter valid passwords | Password updated | Pass | Success message displayed |
+| T151 | Change Password Failure | Enter invalid password | Error message displayed | Pass | Validation feedback shown |
+| T152 | Forgot Password Page | Click Forgot Password | Password reset page loads | Pass | Custom styling applied |
