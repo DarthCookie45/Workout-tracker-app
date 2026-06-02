@@ -50,6 +50,26 @@ class WorkoutRoutine(models.Model):
     workout_date = models.DateField()
     notes = models.TextField(blank=True)
 
+    COLOUR_CHOICES = [
+    ("blue", "Blue"),
+    ("green", "Green"),
+    ("red", "Red"),
+    ("orange", "Orange"),
+    ("purple", "Purple"),
+    ("pink", "Pink"),
+    ("yellow", "Yellow"),
+    ("cyan", "Cyan"),
+    ("magenta", "Magenta"),
+    ("teal", "Teal"),
+    ("indigo", "Indigo"),
+    ("lime", "Lime"),]
+
+    colour = models.CharField(
+    max_length=20,
+    choices=COLOUR_CHOICES,
+    default="blue"
+    )
+
 class Exercise(models.Model):
     routine = models.ForeignKey(
         WorkoutRoutine,

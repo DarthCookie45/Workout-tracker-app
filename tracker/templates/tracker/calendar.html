@@ -94,7 +94,7 @@
                 {% for routine in routine_lookup|get_item:day %}
                 <a
                   href="{% url 'routine_detail' routine.id %}"
-                  class="calendar-workout"
+                  class="calendar-workout {{ routine.colour }}"
                 >
                   {{ routine.name }}
                 </a>
@@ -156,7 +156,7 @@
               {% for routine in routine_lookup|get_item:day %}
               <a
                 href="{% url 'routine_detail' routine.id %}"
-                class="calendar-workout"
+                class="calendar-workout {{ routine.colour }}"
               >
                 {{ routine.name }}
               </a>

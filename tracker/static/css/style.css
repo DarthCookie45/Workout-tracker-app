@@ -403,6 +403,66 @@ body > .container-fluid {
   margin-left: auto;
 }
 
+.calendar-workout.blue {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.calendar-workout.green {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.calendar-workout.red {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.calendar-workout.orange {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.calendar-workout.purple {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
+
+.calendar-workout.pink {
+  background: #fce7f3;
+  color: #be185d;
+}
+
+.calendar-workout.yellow {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+.calendar-workout.cyan {
+  background: #cffafe;
+  color: #0e7490;
+}
+
+.calendar-workout.magenta {
+  background: #fae8ff;
+  color: #a21caf;
+}
+
+.calendar-workout.teal {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+.calendar-workout.indigo {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.calendar-workout.lime {
+  background: #ecfccb;
+  color: #4d7c0f;
+}
+
 /* Profile */
 .profile-avatar-large {
   width: 96px;

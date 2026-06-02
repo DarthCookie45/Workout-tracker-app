@@ -63,6 +63,7 @@ class WorkoutRoutineForm(forms.ModelForm):
             'name',
             'workout_date',
             'notes',
+            'colour',
         ]
 
         widgets = {
@@ -71,7 +72,10 @@ class WorkoutRoutineForm(forms.ModelForm):
                     'type': 'date',
                     'class': 'form-control'
                 }
-            )
+            ),
+            'colour': forms.Select(
+                attrs={'class': 'form-select'}
+            ),
         }
 
 class ExerciseForm(forms.ModelForm):
