@@ -31,6 +31,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1', 
     'localhost', 
     'herokuapp.com',
+    'workout-tracker-app-uk-9863ce88581d.herokuapp.com'
 ]
 
 
