@@ -27,7 +27,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'herokuapp.com']
+ALLOWED_HOSTS = [
+    '127.0.0.1', 
+    'localhost', 
+    'herokuapp.com',
+]
 
 
 # Application definition
@@ -128,8 +132,6 @@ LOGIN_URL = 'login'
 API_NINJAS_KEY = os.environ.get("API_NINJAS_KEY")
 
 # Email settings
-import os
-
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
