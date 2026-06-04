@@ -15,6 +15,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
+
+
 # Homepage / Dashboard
 def home(request):
     if request.user.is_authenticated:
@@ -89,6 +91,7 @@ def home(request):
 
     return render(request, 'tracker/home.html', context)
 
+
 # Workouts
 @login_required
 def workouts(request):
@@ -105,6 +108,7 @@ def workouts(request):
         'tracker/workouts.html',
         context
     )
+
 
 # Progress view
 @login_required
@@ -185,6 +189,7 @@ def progress(request):
         context
     )
 
+
 # Calendar view
 @login_required
 def calendar(request):
@@ -226,28 +231,35 @@ def calendar(request):
         for i in range(7)
     ]
 
-    week_label = f"{week_start.strftime('%d %b')} - {week_days[-1].strftime('%d %b %Y')}"
+    week_label = (
+        f"{week_start.strftime('%d %b')} - "
+        f"{week_days[-1].strftime('%d %b %Y')}"
+        )
 
     previous_week = week_start - timedelta(days=7)
     next_week = week_start + timedelta(days=7)
 
     if calendar_view == 'week':
         routines = WorkoutRoutine.objects.filter(
-        user=request.user,
-        workout_date__gte=week_start,
-        workout_date__lte=week_days[-1]
+            user=request.user,
+            workout_date__gte=week_start,
+            workout_date__lte=week_days[-1]
         ).order_by('workout_date')
 
     else:
         routines = WorkoutRoutine.objects.filter(
-        user=request.user,
-        workout_date__year=year,
-        workout_date__month=month
+            user=request.user,
+            workout_date__year=year,
+            workout_date__month=month
         ).order_by('workout_date')
 
-    month_calendar = calendar_module.Calendar(firstweekday=0).monthdatescalendar(
-        year,
-        month
+    month_calendar = (
+        calendar_module.Calendar(
+            firstweekday=0
+        ).monthdatescalendar(
+            year,
+            month
+        )
     )
 
     routine_lookup = {}
@@ -285,6 +297,7 @@ def calendar(request):
         'tracker/calendar.html',
         context
     )
+
 
 # profile view
 @login_required
@@ -332,6 +345,10 @@ def profile(request):
     )
 
     password_form = PasswordChangeForm(user=request.user)
+    password_form.fields["old_password"].widget.attrs.pop(
+        "autofocus",
+        None
+    )
 
     if request.method == "POST":
         form_type = request.POST.get("form_type")
@@ -355,16 +372,21 @@ def profile(request):
                 data=request.POST
             )
 
+            password_form.fields["old_password"].widget.attrs.pop(
+                "autofocus",
+                None
+            )
+
             if password_form.is_valid():
                 user = password_form.save()
                 update_session_auth_hash(request, user)
                 messages.success(request, "Password changed successfully.")
                 return redirect("profile")
-            else:
-                messages.warning(
-                    request,
-                    "Password could not be changed. Please check the errors below."
-                )
+
+            messages.warning(
+                request,
+                "Password could not be changed. Please check the errors below."
+            )
 
     context = {
         'total_routines': total_routines,
@@ -382,6 +404,7 @@ def profile(request):
         'tracker/profile.html',
         context
     )
+
 
 # View workout details
 @login_required
@@ -430,10 +453,10 @@ def add_workout(request):
 @login_required
 def edit_workout(request, workout_id):
     workout = get_object_or_404(
-    Workout,
-    id=workout_id,
-    user=request.user
-)
+        Workout,
+        id=workout_id,
+        user=request.user
+    )
 
     if request.method == 'POST':
         form = WorkoutForm(
@@ -464,10 +487,10 @@ def edit_workout(request, workout_id):
 @login_required
 def delete_workout(request, workout_id):
     workout = get_object_or_404(
-    Workout,
-    id=workout_id,
-    user=request.user
-)
+        Workout,
+        id=workout_id,
+        user=request.user
+    )
 
     if request.method == 'POST':
         workout.delete()
@@ -483,6 +506,7 @@ def delete_workout(request, workout_id):
         'tracker/delete_workout.html',
         context
     )
+
 
 # User registration
 def register(request):
@@ -502,6 +526,7 @@ def register(request):
         'tracker/register.html',
         {'form': form}
     )
+
 
 # Add workout routine
 @login_required
@@ -524,6 +549,7 @@ def add_routine(request):
         'tracker/add_routine.html',
         {'form': form}
     )
+
 
 # View routine
 @login_required
@@ -558,6 +584,7 @@ def routine_detail(request, routine_id):
         'tracker/routine_detail.html',
         context
     )
+
 
 # Add exercise
 @login_required
@@ -602,6 +629,7 @@ def add_exercise(request, routine_id):
         }
     )
 
+
 # Edit exercise
 @login_required
 def edit_exercise(request, exercise_id):
@@ -631,7 +659,7 @@ def edit_exercise(request, exercise_id):
             exercise.name = selected_name
 
         form = ExerciseForm(instance=exercise)
-    
+
     profile = getattr(request.user, "profile", None)
 
     bodyweight = ""
@@ -649,6 +677,7 @@ def edit_exercise(request, exercise_id):
             'bodyweight': bodyweight,
         }
     )
+
 
 # Delete exercise
 @login_required
@@ -674,6 +703,7 @@ def delete_exercise(request, exercise_id):
             'routine': routine
         }
     )
+
 
 # Edit routine
 @login_required
@@ -707,6 +737,7 @@ def edit_routine(request, routine_id):
         }
     )
 
+
 # Delete routine
 @login_required
 def delete_routine(request, routine_id):
@@ -727,6 +758,7 @@ def delete_routine(request, routine_id):
         {'routine': routine}
     )
 
+
 # Exercise library view with API integration
 @login_required
 def exercise_library(request, routine_id):
@@ -735,7 +767,6 @@ def exercise_library(request, routine_id):
         id=routine_id,
         user=request.user
     )
-    
 
     exercise_name = request.GET.get('name', '')
     muscle = request.GET.get('muscle', '')
@@ -772,7 +803,10 @@ def exercise_library(request, routine_id):
                 api_error = "Exercise library is unavailable right now."
 
         except requests.RequestException:
-            api_error = "Exercise library could not be reached. You can still add exercises manually."
+            api_error = (
+                "Exercise library could not be reached."
+                "You can still add exercises manually."
+                )
 
     context = {
         'routine': routine,
@@ -788,6 +822,7 @@ def exercise_library(request, routine_id):
         'tracker/exercise_library.html',
         context
     )
+
 
 @login_required
 def duplicate_routine(request, routine_id):

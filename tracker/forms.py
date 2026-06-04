@@ -5,6 +5,7 @@ from .models import Exercise
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
+
 class WorkoutForm(forms.ModelForm):
     class Meta:
         model = Workout
@@ -56,6 +57,7 @@ class WorkoutForm(forms.ModelForm):
             })
         }
 
+
 class WorkoutRoutineForm(forms.ModelForm):
     class Meta:
         model = WorkoutRoutine
@@ -77,6 +79,7 @@ class WorkoutRoutineForm(forms.ModelForm):
                 attrs={'class': 'form-select'}
             ),
         }
+
 
 class ExerciseForm(forms.ModelForm):
     class Meta:
@@ -114,6 +117,7 @@ class ExerciseForm(forms.ModelForm):
             return name.strip().title()
 
         return name
+
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)

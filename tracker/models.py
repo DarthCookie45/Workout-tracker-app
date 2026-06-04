@@ -13,28 +13,29 @@ MUSCLE_GROUP_CHOICES = [
     ('Core', 'Core'),
 ]
 
+
 class Workout(models.Model):
 
     user = models.ForeignKey(
-    User,
-    on_delete=models.CASCADE,
-    null=True,
-    blank=True
-)
-    
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
     workout_name = models.CharField(max_length=100)
     exercise = models.CharField(max_length=100)
 
     muscle_group = models.CharField(
-    max_length=20,
-    choices=MUSCLE_GROUP_CHOICES,
-    default='Arms'
-)
-    
+        max_length=20,
+        choices=MUSCLE_GROUP_CHOICES,
+        default='Arms'
+    )
+
     sets = models.PositiveIntegerField()
     reps = models.PositiveIntegerField()
     weight = models.DecimalField(
-        max_digits=6, 
+        max_digits=6,
         decimal_places=2,
         validators=[MinValueValidator(0)]
     )
@@ -43,7 +44,8 @@ class Workout(models.Model):
 
     def __str__(self):
         return f"{self.workout_name} - {self.exercise}"
-    
+
+
 class WorkoutRoutine(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
@@ -51,24 +53,26 @@ class WorkoutRoutine(models.Model):
     notes = models.TextField(blank=True)
 
     COLOUR_CHOICES = [
-    ("blue", "Blue"),
-    ("green", "Green"),
-    ("red", "Red"),
-    ("orange", "Orange"),
-    ("purple", "Purple"),
-    ("pink", "Pink"),
-    ("yellow", "Yellow"),
-    ("cyan", "Cyan"),
-    ("magenta", "Magenta"),
-    ("teal", "Teal"),
-    ("indigo", "Indigo"),
-    ("lime", "Lime"),]
+        ("blue", "Blue"),
+        ("green", "Green"),
+        ("red", "Red"),
+        ("orange", "Orange"),
+        ("purple", "Purple"),
+        ("pink", "Pink"),
+        ("yellow", "Yellow"),
+        ("cyan", "Cyan"),
+        ("magenta", "Magenta"),
+        ("teal", "Teal"),
+        ("indigo", "Indigo"),
+        ("lime", "Lime"),
+        ]
 
     colour = models.CharField(
-    max_length=20,
-    choices=COLOUR_CHOICES,
-    default="blue"
+        max_length=20,
+        choices=COLOUR_CHOICES,
+        default="blue"
     )
+
 
 class Exercise(models.Model):
     routine = models.ForeignKey(
@@ -80,6 +84,7 @@ class Exercise(models.Model):
     sets = models.PositiveIntegerField()
     reps = models.CharField(max_length=20)
     weight = models.DecimalField(max_digits=6, decimal_places=2)
+
 
 class WorkoutSchedule(models.Model):
 
@@ -114,6 +119,7 @@ class WorkoutSchedule(models.Model):
 
     def __str__(self):
         return f"{self.day} - {self.routine.name}"
+
 
 class Profile(models.Model):
     user = models.OneToOneField(
