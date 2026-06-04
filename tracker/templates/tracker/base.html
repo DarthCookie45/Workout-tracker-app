@@ -104,10 +104,13 @@
         Profile
       </a>
 
-      <a href="{% url 'logout' %}">
-        <i class="fa-solid fa-right-from-bracket me-2"></i>
-        Logout
-      </a>
+      <form method="POST" action="{% url 'logout' %}" class="m-0">
+        {% csrf_token %}
+        <button type="submit" class="mobile-logout-btn">
+          <i class="fa-solid fa-right-from-bracket me-2"></i>
+          Logout
+        </button>
+      </form>
     </div>
 
     {% endif %}

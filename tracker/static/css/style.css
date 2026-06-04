@@ -500,6 +500,15 @@ body > .container-fluid {
   padding: 0.6rem;
 }
 
+.mobile-logout-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+
 /* Media Query */
 @media screen and (max-width: 991px) {
   .navbar {
