@@ -104,13 +104,13 @@ The application is suitable for users who want a simple way to organise workouts
 |------------|-----------|
 | As a user, I can register an account | ![Screenshot of registration page](assets/images/Register-userstory.png) |
 | As a user, I can login securely | ![Screenshot of login page](assets/images/Login-userstory.png) |
-| As a user, I can create workout routines | ![Screenshot of add routine page](assets/images/Add%20routine-userstory.png) |
-| As a user, I can edit workout routines | ![Screenshot of edit routine page](assets/images/Edit%20routine-userstory.png) |
-| As a user, I can delete workout routines | ![Screenshot of delete confirmation](assets/images/Delete%20routine-userstory.png) |
-| As a user, I can add exercises | ![Screenshot of add exercise page](assets/images/Add%20exercise-userstory.png) |
+| As a user, I can create workout routines | ![Screenshot of add routine page](assets/images/Add_routine-userstory.png) |
+| As a user, I can edit workout routines | ![Screenshot of edit routine page](assets/images/Edit_routine-userstory.png) |
+| As a user, I can delete workout routines | ![Screenshot of delete confirmation](assets/images/Delete_routine-userstory.png) |
+| As a user, I can add exercises | ![Screenshot of add exercise page](assets/images/Add_exercise-userstory.png) |
 | As a user, I can monitor progress | ![Screenshot of progress chart](assets/images/Progress-userstory.png) |
 | As a user, I can schedule workouts | ![Screenshot of calendar](assets/images/Calendar-userstory.png) |
-| As a user, I can reset my password | ![Screenshot of password reset email](assets/images/Password%20reset-userstory.png) |
+| As a user, I can reset my password | ![Screenshot of password reset email](assets/images/Password_reset-userstory.png) |
 | As a user, I can update my profile to change my email address, bodyweight and my password at any time | ![Screenshot of profile](assets/images/Profile-userstory.png) |
 
 ## UX Design
@@ -133,11 +133,11 @@ The colour scheme uses:
 - Green success messages
 - Red danger actions
 
-These colours provide clear visual feedback while maintaining good contrast
+The application uses a consistent dark blue, white and blue colour palette to create a clean dashboard-style interface
 
 ### Typography
 
-The application uses modern sans-serif fonts to improve readability across desktop and mobile devices.
+The application uses modern sans-serif fonts to improve readability across desktop and mobile devices. Text is displayed on plain backgrounds with sufficient contrast, and Bootstrap typography conventions are used to maintain readability across different screen sizes
 
 Font sizes were selected to create a clear visual hierarchy between page headings, statistics and body content
 
@@ -476,7 +476,7 @@ The profile is also used to support bodyweight exercise calculations within the 
 
 ### Manual Testing
 
-Detailed testing can be found in TESTING.md
+Detailed testing can be found in [TESTING.md](TESTING.md)
 
 A total of 152 tests were completed covering:
 
@@ -492,6 +492,16 @@ A total of 152 tests were completed covering:
 All critical functionality passed testing
 
 Informal testing was conducted with family members and test users throughout development. Feedback was used to improve navigation, profile-functionality, empty-state messaging and password reset workflows
+
+Responsive testing was carried out using browser developer tools at mobile, tablet, laptop and desktop screen sizes. The layout reflows using Bootstrap grid classes and custom CSS, with sidebar navigation adapting for smaller screens
+
+## Automated Testing
+
+No automated unit tests were implemented during development
+
+Testing focused on comprehensive manual testing of all user stories, CRUD functionality, authentication, password reset functionality, responsive design, form validation, deployment testing and browser compatibility testing
+
+All core functionality was manually tested throughout development and again following deployment to Heroku
 
 ### Validator Testing
 
@@ -616,6 +626,20 @@ Minor future enhancements have been identified and are listed within the Future 
 
 12. Open the deployed application and verify all functionality.
 
+### Development vs Production
+
+The application uses SQLite during local development and PostgreSQL when deployed to Heroku
+
+Environment variables are used in production to secure sensitive credentials including:
+
+- SECRET_KEY
+- DATABASE_URL
+- API_NINJAS_KEY
+- EMAIL_HOST_USER
+- EMAIL_HOST_PASSWORD
+
+WhiteNoise is used in production to serve static files and Gunicorn is used as the production web server
+
 ### Environment Variables
 
 Environment variables are stored securely using Heroku Config Vars and are excluded from version control via .gitignore
@@ -666,5 +690,6 @@ Security measures include:
 ### Acknowledgements
 
 - Code Institute for project guidance and learning materials
-- AI-assisted tools were used for troubleshooting, code explanations, documentation structure and technical terminology throughout development. All implementation, testing, debugging, decision-making and final code integration were completed by the developer.
-- Family and test users who provided feedback during development and testing.
+- AI-assisted tools were used for troubleshooting, code explanations, documentation structure and technical terminology throughout development. All implementation, testing, debugging, decision-making and final code integration were completed by the developer
+- Family and test users who provided feedback during development and testing
+- Images used within the project are limited to icons, wireframes, validation evidence and documentation screenshots. Graphics follow a consistent dark blue and white style and do not distract from the main content. No video or audio content is used
