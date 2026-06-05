@@ -510,6 +510,9 @@ def delete_workout(request, workout_id):
 
 # User registration
 def register(request):
+    if request.user.is_authenticated:
+        return redirect("home")
+
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
 
