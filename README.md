@@ -2,7 +2,16 @@
 
 ## Live Site
 
-Via Heroku - https://workout-tracker-app-uk-9863ce88581d.herokuapp.com
+
+The application was previously deployed on Heroku during development and assessment.
+
+To avoid ongoing hosting costs, the live deployment has since been removed. The full source code, documentation and setup instructions remain available in this repository.
+
+To run the project locally:
+
+1. Clone this repository.
+2. Install the required dependencies.
+3. Follow the installation steps below to configure the environment and database.
 
 ## Repository
 
